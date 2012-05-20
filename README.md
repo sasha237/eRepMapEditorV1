@@ -1,5 +1,8 @@
+# eRepMapEditorV2
+Added feature to make units on the map
+
 # eRepMapEditorV1
-Simple application for making game maps
+Simple application for making game maps.
 
 # Why
 Made under influence of playing eRepublic Game

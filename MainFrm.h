@@ -15,7 +15,7 @@
 #pragma once
 #include "Resource.h"
 #include "GdiPlusBitmap.h"
-#include "ChatUsersView.h"
+#include "PropertiesWnd.h"
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -73,15 +73,21 @@ public:
 	CMFCRibbonButton* m_BBridges;
 	CMFCRibbonButton* m_Hospitals;
 	CMFCRibbonButton* m_Defences;
+	CMFCRibbonButton* m_Units;
 	mibiMap m_mibiWaterBtimaps;
 	mibiMap m_mibiBridgeBitmaps;
+	mibiMap m_mibiUnits;
 	CGdiPlusBitmapResource* m_pEmpty;
 	CMFCRibbonButtonsGroup* m_BpGrp;
 	CMFCRibbonButtonsGroup* m_DGrp;
 	CMFCRibbonButtonsGroup* m_HGrp;
+	CMFCRibbonButtonsGroup* m_UGrp;
 	CMFCRibbonCheckBox* m_pShowNumCh;
-//	CChatUsersView m_wndUsersView;
-	CMFCToolBarImages m_UserImages;
+	CPropertiesWnd    m_wndProperties;
+	CMFCRibbonCheckBox* m_pAllFilters;
+	CMFCRibbonColorButton* m_pColorFilter;
+	CMFCRibbonCheckBox* m_pForestFilter;
+
 };
 
 

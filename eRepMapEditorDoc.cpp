@@ -95,6 +95,17 @@ BEGIN_MESSAGE_MAP(CeRepMapEditorDoc, CDocument)
 	ON_COMMAND(ID_H4        				, &CeRepMapEditorDoc::OnHospital4)
 	ON_COMMAND(ID_H5        				, &CeRepMapEditorDoc::OnHospital5)
 	ON_COMMAND(ID_SMALL_CITY				, &CeRepMapEditorDoc::OnSmallCity)
+
+	ON_COMMAND(ID_RECRUIT    				, &CeRepMapEditorDoc::OnRECRUIT    )
+	ON_COMMAND(ID_MUSQUETIER				, &CeRepMapEditorDoc::OnMUSQUETIER )
+	ON_COMMAND(ID_HUSSAR     				, &CeRepMapEditorDoc::OnHUSSAR     )
+	ON_COMMAND(ID_GRENADIER  				, &CeRepMapEditorDoc::OnGRENADIER  )
+	ON_COMMAND(ID_GAUBICA    				, &CeRepMapEditorDoc::OnGAUBICA    )
+	ON_COMMAND(ID_EGER       				, &CeRepMapEditorDoc::OnEGER       )
+	ON_COMMAND(ID_DRAGOON    				, &CeRepMapEditorDoc::OnDRAGOON    )
+	ON_COMMAND(ID_CUIRASSIER 				, &CeRepMapEditorDoc::OnCUIRASSIER )
+	ON_COMMAND(ID_CANNON     				, &CeRepMapEditorDoc::OnCANNON     )
+
 	ON_COMMAND(ID_ZOOMIN_SCALE				, &CeRepMapEditorDoc::OnZoomIn)
 	ON_COMMAND(ID_ZOOMOUT_SCALE				, &CeRepMapEditorDoc::OnZoomOut)
 	ON_UPDATE_COMMAND_UI(ID_BIG_CITY  		, &CeRepMapEditorDoc::OnUpdateBigCity)
@@ -109,6 +120,18 @@ BEGIN_MESSAGE_MAP(CeRepMapEditorDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_H4        		, &CeRepMapEditorDoc::OnUpdateHospital4)
 	ON_UPDATE_COMMAND_UI(ID_H5        		, &CeRepMapEditorDoc::OnUpdateHospital5)
 	ON_UPDATE_COMMAND_UI(ID_SMALL_CITY		, &CeRepMapEditorDoc::OnUpdateSmallCity)
+
+	ON_UPDATE_COMMAND_UI(ID_RECRUIT    		, &CeRepMapEditorDoc::OnUpdateRECRUIT    )
+	ON_UPDATE_COMMAND_UI(ID_MUSQUETIER		, &CeRepMapEditorDoc::OnUpdateMUSQUETIER)
+	ON_UPDATE_COMMAND_UI(ID_HUSSAR     		, &CeRepMapEditorDoc::OnUpdateHUSSAR     )
+	ON_UPDATE_COMMAND_UI(ID_GRENADIER  		, &CeRepMapEditorDoc::OnUpdateGRENADIER  )
+	ON_UPDATE_COMMAND_UI(ID_GAUBICA    		, &CeRepMapEditorDoc::OnUpdateGAUBICA    )
+	ON_UPDATE_COMMAND_UI(ID_EGER       		, &CeRepMapEditorDoc::OnUpdateEGER       )
+	ON_UPDATE_COMMAND_UI(ID_DRAGOON    		, &CeRepMapEditorDoc::OnUpdateDRAGOON    )
+	ON_UPDATE_COMMAND_UI(ID_CUIRASSIER 		, &CeRepMapEditorDoc::OnUpdateCUIRASSIER )
+	ON_UPDATE_COMMAND_UI(ID_CANNON     		, &CeRepMapEditorDoc::OnUpdateCANNON     )
+
+
 	ON_UPDATE_COMMAND_UI(ID_ZOOMIN_SCALE	, &CeRepMapEditorDoc::OnUpdateZoomIn)
 	ON_UPDATE_COMMAND_UI(ID_ZOOMOUT_SCALE	, &CeRepMapEditorDoc::OnUpdateZoomOut)
 
@@ -119,16 +142,27 @@ BEGIN_MESSAGE_MAP(CeRepMapEditorDoc, CDocument)
 	ON_UPDATE_COMMAND_UI(ID_HOSPITALS, &CeRepMapEditorDoc::OnUpdateHospitals)
 	ON_COMMAND(ID_DEFENCES, &CeRepMapEditorDoc::OnDefences)
 	ON_UPDATE_COMMAND_UI(ID_DEFENCES, &CeRepMapEditorDoc::OnUpdateDefences)
-END_MESSAGE_MAP()
+	ON_COMMAND(ID_UNITS, &CeRepMapEditorDoc::OnUnits)
+	ON_UPDATE_COMMAND_UI(ID_UNITS, &CeRepMapEditorDoc::OnUpdateUnits)
+	ON_COMMAND(ID_AREAS, &CeRepMapEditorDoc::OnAREAS)
+	ON_UPDATE_COMMAND_UI(ID_AREAS, &CeRepMapEditorDoc::OnUpdateAREAS)
+	ON_COMMAND(ID_FILTER_COLOR, &CeRepMapEditorDoc::OnFILTER_COLOR)
+	ON_UPDATE_COMMAND_UI(ID_FILTER_COLOR, &CeRepMapEditorDoc::OnUpdateFILTER_COLOR)
+	ON_COMMAND(ID_FILTER_BY_FOREST, &CeRepMapEditorDoc::OnFILTER_BY_FOREST)
+	ON_UPDATE_COMMAND_UI(ID_FILTER_BY_FOREST, &CeRepMapEditorDoc::OnUpdateFILTER_BY_FOREST)
+	ON_COMMAND(ID_ALL_FILTERS, &CeRepMapEditorDoc::OnALL_FILTERS)
+	ON_UPDATE_COMMAND_UI(ID_ALL_FILTERS, &CeRepMapEditorDoc::OnUpdateALL_FILTERS)
+	END_MESSAGE_MAP()
 
 
 // CeRepMapEditorDoc construction/destruction
 
 CeRepMapEditorDoc::CeRepMapEditorDoc()
 {
-	m_iMode = MODE_CURSOR;
+	m_iMode = MODE_PLAIN;
 	m_scale = 1;
-	m_bShowNumbers = true;
+	m_bShowNumbers = false;
+	m_bFilterOn = false;
 }
 
 CeRepMapEditorDoc::~CeRepMapEditorDoc()
@@ -157,6 +191,10 @@ BOOL CeRepMapEditorDoc::OnNewDocument()
 			item->m_iType = MODE_PLAIN;
 			item->m_iSubType = 0;
 			item->m_iBuilding = 0;
+			item->m_pUnitItem = NULL;
+			item->m_bHasUnit = false;
+			item->m_bHasFortif = false;
+			item->m_rgbColor = RGB(255,255,255);
 			m_Elements.insert(make_pair(pp,item));
 		}
 	CalcNeibs();
@@ -187,7 +225,21 @@ void CeRepMapEditorDoc::Serialize(CArchive& ar)
 		forr(it,m_Elements)
 		{
 			ar<<it->first.first<<it->first.second;
-			ar<<it->second->m_iType<<it->second->m_iSubType<<it->second->m_iBuilding;
+			ar<<it->second->m_iType
+				<<it->second->m_iSubType
+				<<it->second->m_iBuilding
+				<<it->second->m_bHasUnit
+				<<it->second->m_bHasFortif
+				<<it->second->m_rgbColor;
+			if (it->second->m_bHasUnit)
+			{
+				CUnitItem* pUnit = it->second->m_pUnitItem;
+				ar<<pUnit->m_sName
+					<<pUnit->m_iCount
+					<<pUnit->m_iType
+					<<pUnit->m_bRotate
+					<<pUnit->m_rgbColor;
+			}
 		}
 	}
 	else
@@ -200,8 +252,15 @@ void CeRepMapEditorDoc::Serialize(CArchive& ar)
 			CMapItem* item = new CMapItem;
 			ar>>pp.first>>pp.second;
 			item->m_piiIndex = pp;
-			ar>>item->m_iType>>item->m_iSubType>>item->m_iBuilding;
+			ar>>item->m_iType>>item->m_iSubType>>item->m_iBuilding>>item->m_bHasUnit>>item->m_bHasFortif>>item->m_rgbColor;
 			m_Elements.insert(make_pair(pp,item));
+			if (item->m_bHasUnit)
+			{
+				CUnitItem* pUnit = new CUnitItem;
+				ar>>pUnit->m_sName>>pUnit->m_iCount>>pUnit->m_iType>>pUnit->m_bRotate>>pUnit->m_rgbColor;
+				item->m_pUnitItem = pUnit;
+				pUnit->m_pMapItem = item;
+			}
 		}
 		CalcNeibs();
 	}
@@ -211,7 +270,13 @@ void CeRepMapEditorDoc::ClearMap()
 {
 	mpiimiMapIt it;
 	forr(it,m_Elements)
+	{
+		if (it->second->m_bHasUnit)
+		{
+			delete it->second->m_pUnitItem;
+		}
 		delete it->second;
+	}
 	m_Elements.clear();
 }
 // CeRepMapEditorDoc diagnostics
@@ -350,6 +415,16 @@ void CeRepMapEditorDoc::OnCursorElement()
 void CeRepMapEditorDoc::OnUpdateCursorElement(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_iMode == MODE_CURSOR);
+
+
+
+	CMainFrame* pFrame = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	if (!pFrame)
+		return;
+	pFrame->m_wndStatusBar.RecalcLayout();
+	pFrame->m_wndStatusBar.RedrawWindow();
+
+	pFrame->ShowPane(&pFrame->m_wndProperties,IsPropVisible(),FALSE,TRUE);
 }
 void  CeRepMapEditorDoc::OnResizeElement()
 {
@@ -372,12 +447,20 @@ void  CeRepMapEditorDoc::OnResizeElement()
 	{
 		if(it->first.first>=m_piiSize.first)
 		{
+			if (it->second->m_bHasUnit)
+			{
+				delete it->second->m_pUnitItem;
+			}
 			delete it->second;
 			it = m_Elements.erase(it);
 			continue;
 		}
 		if(it->first.second>=m_piiSize.second)
 		{
+			if (it->second->m_bHasUnit)
+			{
+				delete it->second->m_pUnitItem;
+			}
 			delete it->second;
 			it = m_Elements.erase(it);
 			continue;
@@ -396,6 +479,10 @@ void  CeRepMapEditorDoc::OnResizeElement()
 			item->m_iType = MODE_PLAIN;
 			item->m_iSubType = 0;
 			item->m_iBuilding = 0;
+			item->m_bHasFortif = false;
+			item->m_bHasUnit = false;
+			item->m_pUnitItem = NULL;
+			item->m_rgbColor = RGB(255,255,255);
 			m_Elements.insert(make_pair(pp,item));
 		}
 		CalcNeibs();
@@ -605,6 +692,7 @@ void CeRepMapEditorDoc::OnUpdateHospital3(CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iM
 void CeRepMapEditorDoc::OnUpdateHospital4(CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_H4			);}
 void CeRepMapEditorDoc::OnUpdateHospital5(CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_H5			);}
 void CeRepMapEditorDoc::OnUpdateSmallCity(CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_SMALL_CITY	);}
+
 void CeRepMapEditorDoc::OnRibbonShowNumbers()
 {
 	m_bShowNumbers=!m_bShowNumbers;
@@ -691,4 +779,170 @@ void CeRepMapEditorDoc::OnUpdateDefences(CCmdUI *pCmdUI)
 	pFrame->m_wndRibbonBar.RecalcLayout();
 	pFrame->m_wndRibbonBar.RedrawWindow();
 
+}
+
+void CeRepMapEditorDoc::OnUnits()
+{
+	CMainFrame* pFrame = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	if (!pFrame)
+		return;
+
+	if(m_iMode==MODE_RECRUIT		) {m_iMode = MODE_MUSQUETIER	; pFrame->m_Units->Redraw();return;}
+	if(m_iMode==MODE_MUSQUETIER		) {m_iMode = MODE_HUSSAR		; pFrame->m_Units->Redraw();return;}
+	if(m_iMode==MODE_HUSSAR			) {m_iMode = MODE_GRENADIER		; pFrame->m_Units->Redraw();return;}
+	if(m_iMode==MODE_GRENADIER		) {m_iMode = MODE_GAUBICA		; pFrame->m_Units->Redraw();return;}
+	if(m_iMode==MODE_GAUBICA		) {m_iMode = MODE_EGER			; pFrame->m_Units->Redraw();return;}
+	if(m_iMode==MODE_EGER			) {m_iMode = MODE_DRAGOON		; pFrame->m_Units->Redraw();return;}
+	if(m_iMode==MODE_DRAGOON		) {m_iMode = MODE_CUIRASSIER	; pFrame->m_Units->Redraw();return;}
+	if(m_iMode==MODE_CUIRASSIER		) {m_iMode = MODE_CANNON		; pFrame->m_Units->Redraw();return;}
+	if(m_iMode==MODE_CANNON			) {m_iMode = MODE_RECRUIT		; pFrame->m_Units->Redraw();return;}
+	
+	m_iMode = MODE_RECRUIT;
+}
+
+void CeRepMapEditorDoc::OnUpdateUnits(CCmdUI *pCmdUI)
+{
+	CMainFrame* pFrame = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	if (!pFrame)
+		return;
+	BOOL b = 
+		m_iMode == MODE_RECRUIT		||
+		m_iMode == MODE_MUSQUETIER	||
+		m_iMode == MODE_HUSSAR		||
+		m_iMode == MODE_GRENADIER	||		
+		m_iMode == MODE_GAUBICA		||
+		m_iMode == MODE_EGER		||
+		m_iMode == MODE_DRAGOON		||
+		m_iMode == MODE_CUIRASSIER	||
+		m_iMode == MODE_CANNON;
+
+	pCmdUI->SetCheck(b);
+	pFrame->m_UGrp->SetVisible(b);
+	pFrame->m_wndStatusBar.RecalcLayout();
+	pFrame->m_wndStatusBar.RedrawWindow();
+
+	if (m_iMode>=MODE_RECRUIT&&m_iMode<=MODE_CANNON)
+		pFrame->m_Units->SetImageIndex(m_iMode-MODE_RECRUIT+39,TRUE);
+	else
+		pFrame->m_Units->SetImageIndex(39,TRUE);
+	pFrame->m_wndRibbonBar.RecalcLayout();
+	pFrame->m_wndRibbonBar.RedrawWindow();
+
+	pFrame->ShowPane(&pFrame->m_wndProperties,IsPropVisible(),FALSE,TRUE);
+}
+
+void CeRepMapEditorDoc::OnAREAS()
+{
+	CMainFrame* pFrame = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	if (!pFrame)
+		return;
+
+	m_iMode = MODE_AREAS;
+}
+
+void CeRepMapEditorDoc::OnUpdateAREAS(CCmdUI *pCmdUI)
+{
+	CMainFrame* pFrame = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	if (!pFrame)
+		return;
+	bool b = m_iMode == MODE_AREAS;
+
+	pCmdUI->SetCheck(b);
+	
+	pFrame->m_wndProperties.ShowOnlyColor(b);
+		
+	pFrame->ShowPane(&pFrame->m_wndProperties,IsPropVisible(),FALSE,TRUE);
+}
+void CeRepMapEditorDoc::OnFILTER_COLOR()
+{
+	FilterByForestAndColor();
+}
+
+void CeRepMapEditorDoc::OnUpdateFILTER_COLOR(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_iMode == MODE_FILTERS);
+}
+void CeRepMapEditorDoc::OnFILTER_BY_FOREST()
+{
+//	m_bFilterByForest = !m_bFilterByForest;
+	FilterByForestAndColor();
+}
+
+void CeRepMapEditorDoc::OnUpdateFILTER_BY_FOREST(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_iMode == MODE_FILTERS);
+//	pCmdUI->SetCheck(m_bFilterByForest);
+}
+void CeRepMapEditorDoc::OnALL_FILTERS()
+{
+	m_iMode = MODE_FILTERS;	
+	m_bFilterOn = true;
+	FilterByForestAndColor();
+	
+}
+
+void CeRepMapEditorDoc::OnUpdateALL_FILTERS(CCmdUI *pCmdUI)
+{
+	pCmdUI->SetCheck(m_iMode == MODE_FILTERS);
+	if (m_iMode!=MODE_FILTERS)
+	{
+		CMainFrame* pFrame = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+		if (!pFrame)
+			return;
+		pFrame->m_pColorFilter->SetColor(RGB(255,255,255));
+		FilterByForestAndColor();
+	}
+}
+bool CeRepMapEditorDoc::IsPropVisible()
+{
+	CMainFrame* pFrame = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	if (!pFrame)
+		return false;
+	return 
+		m_iMode == MODE_CURSOR&&pFrame->m_wndProperties.GetUnitItem()		||
+		m_iMode == MODE_AREAS		||
+		m_iMode == MODE_RECRUIT		||
+		m_iMode == MODE_MUSQUETIER	||
+		m_iMode == MODE_HUSSAR		||
+		m_iMode == MODE_GRENADIER	||		
+		m_iMode == MODE_GAUBICA		||
+		m_iMode == MODE_EGER		||
+		m_iMode == MODE_DRAGOON		||
+		m_iMode == MODE_CUIRASSIER	||
+		m_iMode == MODE_CANNON;
+}
+
+void CeRepMapEditorDoc::OnRECRUIT    (){	m_iMode = MODE_RECRUIT    	;}
+void CeRepMapEditorDoc::OnMUSQUETIER (){	m_iMode = MODE_MUSQUETIER	;}
+void CeRepMapEditorDoc::OnHUSSAR     (){	m_iMode = MODE_HUSSAR     	;}
+void CeRepMapEditorDoc::OnGRENADIER  (){	m_iMode = MODE_GRENADIER  	;}
+void CeRepMapEditorDoc::OnGAUBICA    (){	m_iMode = MODE_GAUBICA    	;}
+void CeRepMapEditorDoc::OnEGER       (){	m_iMode = MODE_EGER       	;}
+void CeRepMapEditorDoc::OnDRAGOON    (){	m_iMode = MODE_DRAGOON    	;}
+void CeRepMapEditorDoc::OnCUIRASSIER (){	m_iMode = MODE_CUIRASSIER 	;}
+void CeRepMapEditorDoc::OnCANNON     (){	m_iMode = MODE_CANNON     	;}
+
+void CeRepMapEditorDoc::OnUpdateRECRUIT    (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_RECRUIT    	);}
+void CeRepMapEditorDoc::OnUpdateMUSQUETIER (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_MUSQUETIER		);}
+void CeRepMapEditorDoc::OnUpdateHUSSAR     (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_HUSSAR     	);}
+void CeRepMapEditorDoc::OnUpdateGRENADIER  (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_GRENADIER  	);}
+void CeRepMapEditorDoc::OnUpdateGAUBICA    (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_GAUBICA    	);}
+void CeRepMapEditorDoc::OnUpdateEGER       (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_EGER       	);}
+void CeRepMapEditorDoc::OnUpdateDRAGOON    (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_DRAGOON    	);}
+void CeRepMapEditorDoc::OnUpdateCUIRASSIER (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_CUIRASSIER 	);}
+void CeRepMapEditorDoc::OnUpdateCANNON     (CCmdUI *pCmdUI){	pCmdUI->SetCheck(m_iMode == MODE_CANNON     	);}
+
+
+void CeRepMapEditorDoc::FilterByForestAndColor()
+{
+	if(!m_bFilterOn)
+		return;
+	m_bFilterOn = m_iMode == MODE_FILTERS;
+	CeRepMapEditorView* pView = dynamic_cast<CeRepMapEditorView*>(GetRoutingView());
+	if (!pView)
+		return;
+	CMainFrame* pFrame = dynamic_cast<CMainFrame*>(AfxGetMainWnd());
+	if (!pFrame)
+		return;
+	pView->FilterByColorAndForest(m_bFilterOn,pFrame->m_pColorFilter->GetColor());
 }

@@ -177,6 +177,16 @@ IDB_PNGB100100          PNG                     "res\\b100100.png"
 IDB_PNGB101000          PNG                     "res\\b101000.png"
 IDB_PNGB101010          PNG                     "res\\b101010.png"
 IDB_PNGB111111          PNG                     "res\\b111111.png"
+
+IDB_PNGRECRUIT          PNG                     "res\\recruitR.png"
+IDB_PNGMUSQUETIER      PNG                     "res\\musquetierR.png"
+IDB_PNGHUSSAR           PNG                     "res\\hussarR.png"
+IDB_PNGGRENADIER        PNG                     "res\\grenadierR.png"
+IDB_PNGGAUBICA          PNG                     "res\\gaubicaR.png"
+IDB_PNGEGER             PNG                     "res\\egerR.png"
+IDB_PNGDRAGOON          PNG                     "res\\dragoonR.png"
+IDB_PNGCUIRASSIER       PNG                     "res\\cuirassierR.png"
+IDB_PNGCANNON           PNG                     "res\\cannonR.png"
 #endif    // Russian resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -212,6 +222,9 @@ IDB_PAGES_SMALL_HC      BITMAP                  "res\\pages_small_hc.bmp"
 IDB_INFO                BITMAP                  "res\\info.bmp"
 IDB_MENU_IMAGES_24      BITMAP                  "res\\menuimages_hc.bmp"
 IDR_MENU_IMAGES         BITMAP                  "res\\menuimages.bmp"
+IDR_PROPERTIES          BITMAP                  "res\\properties.bmp"
+IDB_PROPERTIES_HC       BITMAP                  "res\\properties_hc.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -224,6 +237,8 @@ IDR_MAINFRAME           ICON                    "res\\eRepMapEditor.ico"
 IDR_eRepMapEditorTYPE   ICON                    "res\\eRepMapEditorDoc.ico"
 IDI_CLASS_VIEW_HC       ICON                    "res\\class_view_hc.ico"
 IDI_CLASS_VIEW          ICON                    "res\\class_view.ico"
+IDI_PROPERTIES_WND      ICON         "res\\properties_wnd.ico"
+IDI_PROPERTIES_WND_HC   ICON         "res\\properties_wnd_hc.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -258,6 +273,14 @@ BEGIN
     BUTTON      ID_APP_ABOUT
 END
 
+IDR_PROPERTIES TOOLBAR 16, 16
+BEGIN
+    BUTTON      ID_EXPAND_ALL
+    BUTTON      ID_SORTPROPERTIES
+    BUTTON      ID_PROPERTIES1
+    BUTTON      ID_PROPERTIES2
+END
+
 IDR_MENU_IMAGES TOOLBAR  16, 16
 BEGIN
     BUTTON      ID_WINDOW_MANAGER
@@ -287,6 +310,8 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
         MENUITEM SEPARATOR
+		MENUITEM "&Properties...",              ID_PROPERTIES
+		MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
     POPUP "&View"
@@ -420,6 +445,17 @@ BEGIN
     MENUITEM "Hospital 4",                  ID_H4
     MENUITEM "Hospital 5",                  ID_H5
     MENUITEM "Small City",                  ID_SMALL_CITY
+
+	MENUITEM "RECRUIT",						ID_RECRUIT    
+	MENUITEM "MUSQUETIER" ,                 ID_MUSQUETIER
+	MENUITEM "HUSSAR",						ID_HUSSAR     
+	MENUITEM "GRENADIER",					ID_GRENADIER  
+	MENUITEM "GAUBICA",						ID_GAUBICA    
+	MENUITEM "EGER",						ID_EGER       
+	MENUITEM "DRAGOON",						ID_DRAGOON    
+	MENUITEM "CUIRASSIER",                  ID_CUIRASSIER 
+	MENUITEM "CANNON",						ID_CANNON     
+
     MENUITEM "Zoom in",                     ID_ZOOMIN_SCALE
     MENUITEM "Zoom out",                    ID_ZOOMOUT_SCALE
     MENUITEM "Show numbers",                ID_RIBBON_SHOW_NUMBERS
@@ -428,7 +464,12 @@ BEGIN
     MENUITEM "Simple Bridges",              ID_SIMPLEBRIDGES
     MENUITEM "Turning Bridge",              ID_TURNINGBRIDGE
     MENUITEM "Interchange Bridges",         ID_INTERCHANGEBRIDGES
-END
+	MENUITEM "Units",						ID_UNITS
+	MENUITEM "Areas",						ID_AREAS
+	MENUITEM "Filter by color",				ID_FILTER_COLOR
+	MENUITEM "Filter by forest",			ID_FILTER_BY_FOREST
+	MENUITEM "All filters",			ID_ALL_FILTERS
+	END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -466,23 +507,10 @@ CAPTION "About eRepMapEditor"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
-    LTEXT           "eRepMapEditor, Version 1.0",IDC_STATIC,50,14,114,8,SS_NOPREFIX
+    LTEXT           "MapTool AoE Tactical Mode, Version 1.0",IDC_STATIC,50,14,114,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2010",IDC_STATIC,50,26,114,8
     DEFPUSHBUTTON   "OK",IDOK,114,43,50,14,WS_GROUP
 END
-
-IDD_FORMVIEW DIALOGEX 0, 0, 46, 48
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-FONT 8, "MS Shell Dlg", 400, 0, 0x0
-BEGIN
-    EDITTEXT        IDC_ALL_MESSAGES_EDIT,4,12,17,14,ES_MULTILINE | WS_VSCROLL
-    LISTBOX         IDC_USERS_LIST,25,12,17,14,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_WRITE_MESSAGE_EDIT,4,30,17,14,ES_MULTILINE | WS_VSCROLL
-    DEFPUSHBUTTON   "Send",IDC_SEND_MESSAGE_BUTTON,25,30,17,14
-    CTEXT           "Status",IDC_STATUS_STATIC,4,3,17,8
-    CTEXT           "Chat members",IDC_MEMBERS_STATIC,25,3,17,8
-END
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -509,11 +537,11 @@ BEGIN
             VALUE "CompanyName", "sasha237"
             VALUE "FileDescription", "erepublikmap"
             VALUE "FileVersion", "0.0.0.1"
-            VALUE "InternalName", "eRepMapEditor.exe"
+            VALUE "InternalName", "MapTool AoE Tactical Mode.exe"
             VALUE "LegalCopyright", "sasha237 Inc.  All rights reserved."
-            VALUE "OriginalFilename", "eRepMapEditor.exe"
-            VALUE "ProductName", "eRepMapEditor"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "OriginalFilename", "MapTool AoE Tactical Mode.exe"
+            VALUE "ProductName", "MapTool AoE Tactical Mode"
+            VALUE "ProductVersion", "1.5.0.1"
         END
     END
     BLOCK "VarFileInfo"
@@ -542,9 +570,9 @@ BEGIN
     IDD_FORMVIEW, DIALOG
     BEGIN
         LEFTMARGIN, 4
-        RIGHTMARGIN, 42
+        RIGHTMARGIN, 73
         TOPMARGIN, 3
-        BOTTOMMARGIN, 44
+        BOTTOMMARGIN, 57
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -594,14 +622,27 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDR_MAINFRAME           "eRepMapEditor"
-    IDR_eRepMapEditorTYPE   "\neRepMapEditor\neRepMapEditor\neRepMapEditor Files (*.emap)\n.emap\neRepMapEditor.Document\neRepMapEditor.Document"
+    IDS_RIBBON_RECRUIT       "Recruit"
+    IDS_RIBBON_MUSQUETIER    "Musqetier"
+    IDS_RIBBON_HUSSAR        "Hussar"
+    IDS_RIBBON_GRENADIER     "Grenadier"
+    IDS_RIBBON_GAUBICA       "Gaubica"
+	IDS_RIBBON_EGER          "Eger"  
+    IDS_RIBBON_DRAGOON       "Dragoon"
+    IDS_RIBBON_CUIRASSIER    "Cuirrasier"
+	IDS_RIBBON_CANNON        "Cannon" 
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "MapTool AoE Tactical Mode"
+    IDR_eRepMapEditorTYPE   "\nMapTool AoE Tactical Mode\nMapTool AoE Tactical Mode\nMapTool AoE Tactical Mode Files (*.emap)\n.emap\nMapTool AoE Tactical Mode.Document\nMapTool AoE Tactical Mode.Document"
     IDS_WINDOWS_MANAGER     "&Windows..."
 END
 
 STRINGTABLE 
 BEGIN
-    AFX_IDS_APP_TITLE       "eRepMapEditor"
+    AFX_IDS_APP_TITLE       "MapTool AoE Tactical Mode"
     AFX_IDS_IDLEMESSAGE     "Ready"
 END
 
@@ -735,7 +776,11 @@ BEGIN
     IDS_RIBBON_HOSPITALS    "Hospitals"
     IDS_STATUS_PANE1        "Pane 1"
     IDS_STATUS_PANE2        "Pane 2"
-    IDS_USERS_VIEW          "Users"
+	IDS_RIBBON_UNITS		"Units"
+	IDS_PROPERTIES_WND      "Properties"
+	IDS_RIBBON_FILTER		"Filter by color"
+	IDS_FILTER_BY_FOREST	"Filter by forest"
+	IDS_ALL_FILTERS			"All Filters"
 END
 
 STRINGTABLE 
@@ -847,6 +892,19 @@ END
 
 STRINGTABLE 
 BEGIN
+    ID_RECRUIT    "Add recruit\nAdd recruit"
+    ID_MUSQUETIER "Add musqetier\nAdd musqetier"
+    ID_HUSSAR     "Add hussar\nAdd hussar"
+    ID_GRENADIER  "Add grenadier\nAdd grenadier"
+    ID_GAUBICA    "Add gaubica\nAdd gaubica"
+    ID_EGER       "Add eger\nAdd eger"
+    ID_DRAGOON    "Add dragoon\nAdd dragoon"
+    ID_CUIRASSIER "Add cuirrasier\nAdd cuirassier"
+    ID_CANNON     "Add cannon\nAdd cannon"
+END
+
+STRINGTABLE 
+BEGIN
     ID_H4                   "Add hospital 4\nAdd hospital 4"
 END
 
@@ -858,6 +916,11 @@ BEGIN
     ID_SIMPLEBRIDGES        "Simple Bridges\nSimple Bridges"
     ID_TURNINGBRIDGE        "Tirnuing Bridges\nTirnuing Bridges"
     ID_INTERCHANGEBRIDGES   "Interchange Bridges\nInterchange Bridges"
+	ID_UNITS				"Units\nUnits"
+	ID_AREAS				"Areas\nAreas"
+	ID_FILTER_COLOR			"Filter by color\nFilter by color"
+	ID_FILTER_BY_FOREST		"Filter by forest\nFilter by forest"
+	ID_ALL_FILTERS			"All filters\nAll filters"
 END
 
 #endif    // English (U.S.) resources

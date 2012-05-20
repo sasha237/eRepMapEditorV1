@@ -24,7 +24,6 @@
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN            // Exclude rarely-used stuff from Windows headers
 #endif
-
 #include "targetver.h"
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // some CString constructors will be explicit
@@ -55,6 +54,24 @@
 #include <vector>
 #include <GdiPlus.h>
 #include <math.h>
+#include <macros.h>
+#include <client.h>
+#include <messagehandler.h>
+#include <connectionlistener.h>
+#include <disco.h>
+#include <message.h>
+#include <loghandler.h>
+#include <tlshandler.h>
+#include <tlsdefault.h>
+#include <logsink.h>
+#include <base64.h>
+#include <config.h>
+#include <stdio.h>
+#include <locale.h>
+#include <string.h>
+
+#include <cstdio> // [s]print[f]
+
 
 #define MODE_CURSOR				1
 #define MODE_PLAIN				2
@@ -93,9 +110,26 @@
 #define MODE_H5					33
 #define MODE_SMALL_CITY			34
 
+#define MODE_RECRUIT			35
+#define MODE_MUSQUETIER			36
+#define MODE_HUSSAR				37
+#define MODE_GRENADIER			38
+#define MODE_GAUBICA			39
+#define MODE_EGER				40
+#define MODE_DRAGOON			41
+#define MODE_CUIRASSIER			42
+#define MODE_CANNON				43
 
-#define STEP_X					100
-#define STEP_Y					86
+#define MODE_AREAS				44
+
+#define MODE_FILTERS			45
+
+#define STEP_ORIG_X				100
+#define STEP_ORIG_Y				86
+#define STEP_X					150
+#define STEP_Y					200
+#define STEP_CH_X				((double)(STEP_ORIG_X)/(double)(STEP_X))
+#define STEP_CH_Y				((double)(STEP_ORIG_Y)/(double)(STEP_Y))
 #define MIN_SCALE				0.1
 #define MAX_SCALE				10
 
@@ -103,6 +137,7 @@ using namespace std;
 using namespace Gdiplus;
 
 class CMapItem;
+class CUnitItem;
 
 typedef pair<int, int> piiPair;
 class CPairSorter
@@ -119,6 +154,13 @@ typedef vector<CMapItem*> vmiVector;
 typedef vmiVector::iterator vmiVectorIt;
 typedef map<piiPair,piiPair,CPairSorter> mpiipiiMap;
 typedef mpiipiiMap::iterator mpiipiiMapIt;
+
+typedef map<piiPair,CUnitItem*> mpiiuiMap;
+typedef mpiiuiMap::iterator mpiiuiMapIt;
+typedef vector<CUnitItem*> vuiVector;
+typedef vuiVector::iterator vuiVectorIt;
+typedef set<CUnitItem*> suiSet;
+typedef suiSet::iterator suiSetIt;
 
 class CGdiPlusBitmapResource;
 

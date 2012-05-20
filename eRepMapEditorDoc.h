@@ -115,6 +115,18 @@ public:
 	afx_msg void OnHospital4();
 	afx_msg void OnHospital5();
 	afx_msg void OnSmallCity();
+
+	afx_msg void OnRECRUIT    ();
+	afx_msg void OnMUSQUETIER();
+	afx_msg void OnHUSSAR     ();
+	afx_msg void OnGRENADIER  ();
+	afx_msg void OnGAUBICA    ();
+	afx_msg void OnEGER       ();
+	afx_msg void OnDRAGOON    ();
+	afx_msg void OnCUIRASSIER ();
+	afx_msg void OnCANNON     ();
+
+
 	afx_msg void OnZoomIn();
 	afx_msg void OnZoomOut();
 	afx_msg void OnUpdateBigCity(CCmdUI *pCmdUI);
@@ -132,6 +144,17 @@ public:
 	afx_msg void OnUpdateZoomIn(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateZoomOut(CCmdUI *pCmdUI);
 
+
+	afx_msg void OnUpdateRECRUIT    (CCmdUI *pCmdUI);
+	afx_msg void OnUpdateMUSQUETIER (CCmdUI *pCmdUI);
+	afx_msg void OnUpdateHUSSAR     (CCmdUI *pCmdUI);
+	afx_msg void OnUpdateGRENADIER  (CCmdUI *pCmdUI);
+	afx_msg void OnUpdateGAUBICA    (CCmdUI *pCmdUI);
+	afx_msg void OnUpdateEGER       (CCmdUI *pCmdUI);
+	afx_msg void OnUpdateDRAGOON    (CCmdUI *pCmdUI);
+	afx_msg void OnUpdateCUIRASSIER (CCmdUI *pCmdUI);
+	afx_msg void OnUpdateCANNON     (CCmdUI *pCmdUI);
+
 	bool m_bShowNumbers;
 	double m_scale;
 	piiPair m_piiSize;
@@ -147,6 +170,19 @@ public:
 	afx_msg void OnUpdateHospitals(CCmdUI *pCmdUI);
 	afx_msg void OnDefences();
 	afx_msg void OnUpdateDefences(CCmdUI *pCmdUI);
+	afx_msg void OnUnits();
+	afx_msg void OnUpdateUnits(CCmdUI *pCmdUI);
+	afx_msg void OnAREAS();
+	afx_msg void OnUpdateAREAS(CCmdUI *pCmdUI);
+	afx_msg void OnFILTER_COLOR();
+	afx_msg void OnUpdateFILTER_COLOR(CCmdUI *pCmdUI);
+	afx_msg void OnFILTER_BY_FOREST();
+	afx_msg void OnUpdateFILTER_BY_FOREST(CCmdUI *pCmdUI);
+	afx_msg void OnALL_FILTERS();
+	afx_msg void OnUpdateALL_FILTERS(CCmdUI *pCmdUI);	
+	bool IsPropVisible();
+	void FilterByForestAndColor();
+	bool m_bFilterOn;
 };
 
 

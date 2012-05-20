@@ -61,6 +61,14 @@ CMainFrame::~CMainFrame()
 		delete m_mibiBridgeBitmaps.begin()->second;
 		m_mibiBridgeBitmaps.erase(m_mibiBridgeBitmaps.begin());
 	}
+	while(m_mibiUnits.size())
+	{
+		delete m_mibiUnits.begin()->second;
+		m_mibiUnits.erase(m_mibiUnits.begin());
+	}
+
+	delete m_pEmpty;
+	m_pEmpty = NULL;
 
 }
 
@@ -108,11 +116,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMFCToolBar::AddToolBarForImageCollection(IDR_MENU_IMAGES, theApp.m_bHiColorIcons ? IDB_MENU_IMAGES_24 : 0);
 
-// 	if (!CreateDockingWindows())
-// 	{
-// 		TRACE0("Failed to create docking windows\n");
-// 		return -1;
-// 	}
+ 	if (!CreateDockingWindows())
+	{
+		TRACE0("Failed to create docking windows\n");
+		return -1;
+	}
 
 
 	// Navigation pane will be created at left, so temporary disable docking at the left side:
@@ -122,26 +130,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableDocking(CBRS_ALIGN_LEFT);
 	EnableAutoHidePanes(CBRS_ALIGN_RIGHT);
 
-// 	m_wndUsersView.EnableDocking(CBRS_ALIGN_ANY);
-// 
-// 	DockPane(&m_wndUsersView);
-
+	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wndProperties);
 
 	// Enable enhanced windows management dialog
 	EnableWindowsDialog(ID_WINDOW_MANAGER, IDS_WINDOWS_MANAGER, TRUE);
 
 	// enable quick (Alt+drag) toolbar customization
 	CMFCToolBar::EnableQuickCustomization();
-
-	if (CMFCToolBar::GetUserImages() == NULL)
-	{
-		// load user-defined toolbar images
-		if (m_UserImages.Load(_T(".\\UserImages.bmp")))
-		{
-			m_UserImages.SetImageSize(CSize(16, 16), FALSE);
-			CMFCToolBar::SetUserImages(&m_UserImages);
-		}
-	}
 
 	return 0;
 }
@@ -219,11 +215,6 @@ void CMainFrame::InitializeRibbon()
 	bNameValid = strTemp.LoadString(IDS_RIBBON_PAINT);
 	ASSERT(bNameValid);
 	pCategoryHome = m_wndRibbonBar.AddCategory(strTemp, IDB_MAINTOOLBAR_SMALL, IDB_MAINTOOLBAR);
-
-	bNameValid = strTemp.LoadString(IDS_RIBBON_CURSOR);
-	ASSERT(bNameValid);
-	pPanelWindow = pCategoryHome->AddPanel(strTemp);
-	pPanelWindow->Add(new CMFCRibbonButton(ID_CURSOR_ELEMENT, strTemp, 7, 7));
 
 	bNameValid = strTemp.LoadString(IDS_RIBBON_ELEMENTS);
 	ASSERT(bNameValid);
@@ -354,6 +345,65 @@ void CMainFrame::InitializeRibbon()
 	m_wndStatusBar.AddElement(m_DGrp,strTemp);
 	m_DGrp->SetVisible(FALSE);
 
+	bNameValid = strTemp.LoadString(IDS_RIBBON_UNITS);
+	ASSERT(bNameValid);
+	pPanelWindow = pCategoryHome->AddPanel(strTemp);
+
+	m_UGrp = new CMFCRibbonButtonsGroup();
+	m_UGrp->SetImages(&images,NULL,NULL);
+	bNameValid = strTemp.LoadString(IDS_RIBBON_UNITS);
+	m_Units = new CMFCRibbonButton(ID_UNITS, strTemp, 39,39);
+
+	bNameValid = strTemp.LoadString(IDS_RIBBON_CURSOR);
+	ASSERT(bNameValid);
+	pPanelWindow->Add(new CMFCRibbonButton(ID_CURSOR_ELEMENT, strTemp, 7, 7));
+
+	pPanelWindow->Add(m_Units);
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_RECRUIT, _T(""), 39,39));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_RECRUIT, _T(""), 39,39));
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_MUSQUETIER, _T(""), 40,40));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_MUSQUETIER, _T(""), 40,40));
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_HUSSAR, _T(""), 41,41));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_HUSSAR, _T(""), 41,41));
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_GRENADIER, _T(""), 42,42));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_GRENADIER, _T(""), 42,42));
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_GAUBICA, _T(""), 43,43));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_GAUBICA, _T(""), 43,43));
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_EGER, _T(""), 44,44));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_EGER, _T(""), 44,44));
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_DRAGOON, _T(""), 45,45));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_DRAGOON, _T(""), 45,45));
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_CUIRASSIER, _T(""), 46,46));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_CUIRASSIER, _T(""), 46,46));
+	m_Units->AddSubItem(new CMFCRibbonButton	(ID_CANNON, _T(""), 47,47));
+	m_UGrp->AddButton(new CMFCRibbonButton		(ID_CANNON, _T(""), 47,47));
+  	pBtnWindows = new CMFCRibbonButton			(ID_AREAS, "Area", 48,48);
+  	pPanelWindow->Add(pBtnWindows);
+
+	bNameValid = strTemp.LoadString(IDS_RIBBON_UNITS);
+	m_wndStatusBar.AddElement(m_UGrp,strTemp);
+	m_UGrp->SetVisible(FALSE);
+
+	bNameValid = strTemp.LoadString(IDS_RIBBON_UNITS);
+	ASSERT(bNameValid);
+	pPanelWindow = pCategoryHome->AddPanel(strTemp);
+
+	bNameValid = strTemp.LoadString(IDS_ALL_FILTERS);
+	ASSERT(bNameValid);
+	m_pAllFilters = new CMFCRibbonCheckBox(ID_ALL_FILTERS,strTemp);
+	pPanelWindow->Add(m_pAllFilters);
+
+	m_pColorFilter = new CMFCRibbonColorButton(ID_FILTER_COLOR,_T("Filter color"),-1,RGB(255, 255, 255));
+	m_pColorFilter->EnableAutomaticButton(_T("Neutral"), RGB(255, 255, 255));
+	m_pColorFilter->EnableOtherButton(_T("Other..."));
+	pPanelWindow->Add(m_pColorFilter);
+
+// 	bNameValid = strTemp.LoadString(IDS_FILTER_BY_FOREST);
+// 	ASSERT(bNameValid);
+// 	m_pForestFilter = new CMFCRibbonCheckBox(ID_FILTER_BY_FOREST,strTemp);
+// 	pPanelWindow->Add(m_pForestFilter);
+
+	pPanelWindow->SetJustifyColumns(TRUE);
 
 	bNameValid = strTemp.LoadString(IDS_RIBBON_SIZE);
 	ASSERT(bNameValid);
@@ -553,7 +603,6 @@ void CMainFrame::LoadBitmaps()
 	cb->Load(_T("IDB_FOREST"), _T("PNG"));
 	m_mibiElBtimaps.insert(make_pair(MODE_FOREST,cb));
 
-
 	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGBIG_CITY"), _T("PNG"));m_mibiElBtimaps.insert(make_pair(MODE_BIG_CITY	,cb));
 	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGD1"), _T("PNG"));m_mibiElBtimaps.insert(make_pair(MODE_D1	,cb));
 	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGD2"), _T("PNG"));m_mibiElBtimaps.insert(make_pair(MODE_D2	,cb));
@@ -686,6 +735,17 @@ void CMainFrame::LoadBitmaps()
 	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGB111111"), _T("PNG")); m_mibiBridgeBitmaps.insert(make_pair(MODE_BRIDGE111111,cb));
 
 
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGRECRUIT"),		_T("PNG")); m_mibiUnits.insert(make_pair(MODE_RECRUIT    ,cb));
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGMUSQUETIER"),	_T("PNG")); m_mibiUnits.insert(make_pair(MODE_MUSQUETIER,cb));
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGHUSSAR"),		_T("PNG")); m_mibiUnits.insert(make_pair(MODE_HUSSAR     ,cb));
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGGRENADIER"),	_T("PNG")); m_mibiUnits.insert(make_pair(MODE_GRENADIER  ,cb));
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGGAUBICA"),		_T("PNG")); m_mibiUnits.insert(make_pair(MODE_GAUBICA    ,cb));
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGEGER"),		_T("PNG")); m_mibiUnits.insert(make_pair(MODE_EGER       ,cb));
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGDRAGOON"),		_T("PNG")); m_mibiUnits.insert(make_pair(MODE_DRAGOON    ,cb));
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGCUIRASSIER"),	_T("PNG")); m_mibiUnits.insert(make_pair(MODE_CUIRASSIER ,cb));
+	cb = new CGdiPlusBitmapResource; cb->Load(_T("IDB_PNGCANNON"),		_T("PNG")); m_mibiUnits.insert(make_pair(MODE_CANNON     ,cb));
+
+
 	m_pEmpty = new CGdiPlusBitmapResource; 
 	m_pEmpty->Load(_T("IDB_EMPTY"), _T("PNG"));
 }
@@ -693,26 +753,28 @@ void CMainFrame::LoadBitmaps()
 
 BOOL CMainFrame::CreateDockingWindows()
 {
-// 	BOOL bNameValid;
-// 
-// 	// Create class view
-// 	CString strView;
-// 	bNameValid = strView.LoadString(IDS_USERS_VIEW);
-// 	ASSERT(bNameValid);
-// 	if (!m_wndUsersView.Create(strView, this, CRect(0, 0, 0, 0), TRUE, ID_VIEW_USERS, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | CBRS_SIZE_DYNAMIC | CBRS_LEFT | CBRS_FLOAT_MULTI))
-// 	{
-// 		TRACE0("Failed to create Class View window\n");
-// 		return FALSE; // failed to create
-// 	}
-// 
-// 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
+	BOOL bNameValid;
+
+	// Create properties window
+	CString strPropertiesWnd;
+	bNameValid = strPropertiesWnd.LoadString(IDS_PROPERTIES_WND);
+	ASSERT(bNameValid);
+	if (!m_wndProperties.Create(strPropertiesWnd, this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
+	{
+		TRACE0("Failed to create Properties window\n");
+		return FALSE; // failed to create
+	}
+
+	SetDockingWindowIcons(theApp.m_bHiColorIcons);
 	return TRUE;
 }
 
 void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 {
-// 	HICON hClassViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
-// 	m_wndUsersView.SetIcon(hClassViewIcon, FALSE);
+	HICON hPropertiesBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);
 
-//	UpdateMDITabbedBarsIcons();
+//	ShowPane(&m_wndProperties,!m_wndProperties.IsVisible(),FALSE,TRUE);
+
+	UpdateMDITabbedBarsIcons();
 }

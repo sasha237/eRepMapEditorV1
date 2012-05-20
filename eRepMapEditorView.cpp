@@ -52,6 +52,10 @@ CeRepMapEditorView::CeRepMapEditorView()
 {
 	m_BackBuffer = NULL;
 	m_Temp = NULL;
+
+	m_bFilterOn = false;
+	m_rgbFilter = RGB(255,255,255);
+
 }
 
 CeRepMapEditorView::~CeRepMapEditorView()
@@ -145,15 +149,15 @@ void CeRepMapEditorView::OnDraw(CDC* pDC)
 	rt.bottom=rt.top+rt.Height()/pDoc->m_scale;
 
 	CSize sizeTotal;
-	sizeTotal.cx = STEP_X*pDoc->m_piiSize.first+100;
-	sizeTotal.cy = STEP_Y*pDoc->m_piiSize.second+100;
+	sizeTotal.cx = STEP_X*pDoc->m_piiSize.first+100/STEP_CH_X;
+	sizeTotal.cy = STEP_Y*pDoc->m_piiSize.second+100/STEP_CH_Y;
 	sizeTotal.cx*=pDoc->m_scale;
 	sizeTotal.cy*=pDoc->m_scale;
 	SetScrollSizes(MM_TEXT, sizeTotal);
 	
 	if (!m_BackBuffer)
 	{
-		m_BackBuffer = new Bitmap(STEP_X*pDoc->m_piiSize.first+100, STEP_Y*pDoc->m_piiSize.second+100);
+		m_BackBuffer = new Bitmap(STEP_X*pDoc->m_piiSize.first+100/STEP_CH_X, STEP_Y*pDoc->m_piiSize.second+100/STEP_CH_Y);
 		bNew = true;
 	}
 	
@@ -169,9 +173,10 @@ void CeRepMapEditorView::OnDraw(CDC* pDC)
 	m_Coords.clear();
 	if(bNew)
 	{
+		CScrollView::OnEraseBkgnd(pDC);
 		m_Temp = new Graphics(m_BackBuffer);
 		SolidBrush whiteBrush(Color(255, 255, 255, 255));
-		m_Temp->FillRectangle(&whiteBrush,0,0,STEP_X*pDoc->m_piiSize.first+100,STEP_Y*pDoc->m_piiSize.second+100);
+		m_Temp->FillRectangle(&whiteBrush,0,0,STEP_X*pDoc->m_piiSize.first+100/STEP_CH_X,STEP_Y*pDoc->m_piiSize.second+100/STEP_CH_Y);
 	}
 
 
@@ -197,8 +202,8 @@ void CeRepMapEditorView::OnDraw(CDC* pDC)
 				itEls->second->m_iSubType = iMask;
 			}
 		}
-		x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50-dx;
-		y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+		x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+		y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 		if (!bNew)
 		{
 			if(x+STEP_X<0||x-STEP_X>rt.right||
@@ -209,16 +214,16 @@ void CeRepMapEditorView::OnDraw(CDC* pDC)
 
 //		m_Temp->DrawImage(*pFrame->m_pEmpty,x,y-1);
 
-		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50-dx;
-		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
 		if (bNew)
-			m_Temp->DrawImage(*pBmp, x, y);
+			m_Temp->DrawImage(*pBmp, x, y,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 
 		x*=pDoc->m_scale;
 		y*=pDoc->m_scale;
 
-		m_Coords.insert(make_pair(make_pair(STEP_X*itEls->first.first+84-dx,STEP_Y*itEls->first.second+50+(itEls->first.first%2?42:0)+42-dy),itEls->first));
+		m_Coords.insert(make_pair(make_pair(STEP_X*itEls->first.first+84/STEP_CH_X-dx,STEP_Y*itEls->first.second+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)+42/STEP_CH_Y-dy),itEls->first));
 		
 		if (bNew)
 		{		
@@ -228,18 +233,18 @@ void CeRepMapEditorView::OnDraw(CDC* pDC)
 				{
 					pBmp = it->second;
 					
-					x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50-dx;
-					y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+					x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+					y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
 					if(x+STEP_X*2>0&&x-STEP_X*2<rt.right*pDoc->m_scale&&
 						y+STEP_Y*2>0&&y-STEP_Y*2<rt.bottom*pDoc->m_scale || bNew)
 					{
-						m_Temp->DrawImage(*pBmp, x, y);
+						m_Temp->DrawImage(*pBmp, x, y,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 					}
 				}
 			}
-			x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50-dx;
-			y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+			x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+			y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
 			if (pDoc->m_bShowNumbers)
 			{
@@ -268,6 +273,115 @@ void CeRepMapEditorView::OnDraw(CDC* pDC)
 
 				m_Temp->DrawString(wss, -1, &font, bounds, &format, &brush);		
 			}	
+
+			if (itEls->second->m_rgbColor!=RGB(255,255,255))
+			{
+				int iXs[6];
+				int iYs[6];
+
+				x = STEP_X*itEls->first.first+STEP_X/2;
+				y = STEP_Y*itEls->first.second+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
+
+				iXs[0] = x + STEP_X * 0 / 4 + 2; iYs[0] = y + STEP_Y * 0 / 2 + 0;
+				iXs[1] = x + STEP_X * 5 / 8 + 8; iYs[1] = y + STEP_Y * 0 / 2 + 0;
+				iXs[2] = x + STEP_X * 4 / 4 + 2; iYs[2] = y + STEP_Y * 1 / 2;
+				iXs[3] = x + STEP_X * 5 / 8 + 8; iYs[3] = y + STEP_Y * 2 / 2;
+				iXs[4] = x + STEP_X * 0 / 4 + 2; iYs[4] = y + STEP_Y * 2 / 2;
+				iXs[5] = x - STEP_X * 1 / 4 - 12; iYs[5] = y + STEP_Y * 1 / 2; 
+
+				PointF ppf[6];
+
+				COLORREF rgb = itEls->second->m_rgbColor;
+				SolidBrush colorBrush(Color(30,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)));
+				Pen colorPen(Color(255,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)),7);
+				int i;
+				for (i=0;i<6;i++)
+				{
+					ppf[i].X = iXs[i];
+					ppf[i].Y = iYs[i];
+				}
+
+				m_Temp->DrawPolygon(&colorPen,ppf,6);
+				m_Temp->FillPolygon(&colorBrush,ppf,6);
+			}
+			if (itEls->second->m_bHasUnit)
+			{
+				if (m_bFilterOn)
+				{
+					if (m_rgbFilter != RGB(255,255,255))
+					{
+						if(itEls->second->m_pUnitItem->m_rgbColor!=m_rgbFilter&&itEls->second->m_iType == MODE_FOREST)
+							continue;
+					}
+					else
+						if(itEls->second->m_iType == MODE_FOREST)
+							continue;
+
+				}
+				ifnend(it,pFrame->m_mibiUnits,itEls->second->m_pUnitItem->m_iType)
+				{
+					pBmp = it->second;
+					if (itEls->second->m_pUnitItem->m_bRotate)
+					{
+						pBmp->m_pBitmap->RotateFlip(RotateNoneFlipX);
+					}
+
+					x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X*2/3-dx;
+					y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y+(itEls->first.first%2?STEP_Y/2:0)-dy;
+
+					x-=2;
+					Gdiplus::RectF bufRt(x+20,y,STEP_X-40,STEP_X);
+					Gdiplus::RectF bufRt0 = bufRt;
+
+					bufRt0.X-=5;
+					bufRt0.Y+=15;
+					bufRt0.Width+=10;
+					bufRt0.Height-=30;
+
+					COLORREF rgb = itEls->second->m_pUnitItem->m_rgbColor;
+					SolidBrush colorBrush(Color(30,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)));
+					Pen colorPen(Color(255,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)),3);
+					GraphicsPath gp1;
+					Region oldReg;
+					Region bufReg;
+
+					WCHAR wsName[1024], wsCount[1024];
+					CString sName = itEls->second->m_pUnitItem->m_sName;
+					CString sCount;
+					sCount.Format("%d", itEls->second->m_pUnitItem->m_iCount);
+					mbstowcs(wsName,sName,sName.GetLength()+1);
+					mbstowcs(wsCount,sCount,sCount.GetLength()+1);
+					StringFormat format;
+					format.SetAlignment(StringAlignmentCenter);
+					format.SetLineAlignment(StringAlignmentCenter);
+					Gdiplus::Font font(L"Arial", 10, FontStyleBold);
+
+					SolidBrush fontBrush(Color(255, 255, 255, 255)); 
+
+					gp1.AddRectangle(bufRt0);
+
+					m_Temp->GetClip(&oldReg);
+					m_Temp->GetClip(&bufReg);
+					bufReg.Intersect(&gp1);
+					m_Temp->SetClip(&bufReg);
+					m_Temp->FillEllipse(&colorBrush,bufRt);
+					m_Temp->DrawEllipse(&colorPen,bufRt);
+					m_Temp->SetClip(&oldReg);
+					RectF boundsName(x+20,y-15,STEP_X-40,30);
+					RectF boundsCount(x+20,y+STEP_Y*3/4-15,STEP_X-40,30);
+					DrawFillRoundRect(*m_Temp,colorPen,colorBrush,x+20,y-15,STEP_X-40,30,5);
+					m_Temp->DrawString(wsName, -1, &font, boundsName, &format, &fontBrush);		
+					DrawFillRoundRect(*m_Temp,colorPen,colorBrush,x+20,y+STEP_Y*3/4-15,STEP_X-40,30,5);
+					m_Temp->DrawString(wsCount, -1, &font, boundsCount, &format, &fontBrush);		
+					m_Temp->DrawImage(*pBmp, x+5, y,pBmp->m_pBitmap->GetWidth(),pBmp->m_pBitmap->GetHeight());
+					if (itEls->second->m_pUnitItem->m_bRotate)
+					{
+						pBmp->m_pBitmap->RotateFlip(RotateNoneFlipX);
+					}
+
+				}
+			}
+
 		}
 	}
 
@@ -432,26 +546,26 @@ void CeRepMapEditorView::RegenUpper(piiPair pp)
 
 	pDoc->SetModifiedFlag(TRUE);
 
-	x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50-dx;
-	y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+	x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+	y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
 	x-=STEP_X/4;
 	y-=STEP_Y/4;
 
 	CRect rtt;
-	
+
 	rtt.left = x;
 	rtt.top = y;
-	rtt.right = x+pFrame->m_pEmpty->m_pBitmap->GetWidth()+STEP_X/4;
-	rtt.bottom = y+pFrame->m_pEmpty->m_pBitmap->GetHeight()+STEP_Y/4;
+	rtt.right = x+pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/4;
+	rtt.bottom = y+pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y/4;
 
 	CClientDC dc(this);
 	CRgn rgn;
-	x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50-dx;
-	y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+	x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+	y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
-	x1 = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50;
-	y1 = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0);
+	x1 = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2;
+	y1 = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
 
 
 	CPoint pps[18];
@@ -474,7 +588,7 @@ void CeRepMapEditorView::RegenUpper(piiPair pp)
 	pps[15].x =x1-STEP_X*3/3-2; pps[15].y =y1;
 	pps[16].x =x1-STEP_X*2/3-2; pps[16].y =y1-STEP_Y/2-1;
 	pps[17].x =x1-2;			pps[17].y =y1-STEP_Y/2-1;
-	
+
 	for (i=0;i<18;i++)
 	{
 		ppf[i].X=pps[i].x;
@@ -486,18 +600,17 @@ void CeRepMapEditorView::RegenUpper(piiPair pp)
 	GraphicsPath gPath;
 	gPath.AddPolygon(ppf,18);
 	rgn.CreatePolygonRgn(pps,18,WINDING);
- 	dc.SelectClipRgn(&rgn);
+	dc.SelectClipRgn(&rgn);
 	Gdiplus::Graphics graphics(dc);
 	Bitmap backBuffer(rt.right, rt.bottom, &graphics);
 	Graphics temp(&backBuffer);
 	graphics.ScaleTransform(pDoc->m_scale,pDoc->m_scale);
-	
-  	SolidBrush whiteBrush(Color(255, 255, 255, 255));
-  	temp.FillRectangle(&whiteBrush,x-STEP_X*2,y-STEP_Y*2,pFrame->m_pEmpty->m_pBitmap->GetWidth()+STEP_X*4,pFrame->m_pEmpty->m_pBitmap->GetHeight()+STEP_Y*4);
+
+	SolidBrush whiteBrush(Color(255, 255, 255, 255));
+	temp.FillRectangle(&whiteBrush,x-STEP_X*2,y-STEP_Y*2,pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X*4,pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y*4);
 	m_Temp->FillPath(&whiteBrush,&gPath);
 	m_Temp->SetClip(&gPath);
-//	m_Temp->FillRectangle(&whiteBrush,x-STEP_X*2,y-STEP_Y*2,pFrame->m_pEmpty->m_pBitmap->GetWidth()+STEP_X*4,pFrame->m_pEmpty->m_pBitmap->GetHeight()+STEP_Y*4);
-
+	m_Temp->FillRectangle(&whiteBrush,x-STEP_X*2,y-STEP_Y*2,pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X*4,pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y*4);
 	mpiimiMap pElemets;
 	pElemets.insert(make_pair(itEls->first,itEls->second));
 	for (i=0;i<itEls->second->m_vmiNeibs.size();++i)
@@ -537,29 +650,29 @@ void CeRepMapEditorView::RegenUpper(piiPair pp)
 			}
 		}
 
-		x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50-dx;
-		y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+		x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+		y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
 		if(x+STEP_X*2<0||x-STEP_X*2>rt.right||
 			y+STEP_Y*2<0||y-STEP_Y*2>rt.bottom)
 			continue;
 
-//		temp.DrawImage(*pFrame->m_pEmpty,x,y-1);
+		//		temp.DrawImage(*pFrame->m_pEmpty,x,y-1);
 
-		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50-dx;
-		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
-		x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50;
-		y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0);
+		x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2;
+		y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
 
-		
- 		temp.DrawImage(*pBmp, x, y);
- 		m_Temp->DrawImage(*pBmp, x1, y1);
+
+		temp.DrawImage(*pBmp, x, y,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
+		m_Temp->DrawImage(*pBmp, x1, y1,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 
 		x*=pDoc->m_scale;
 		y*=pDoc->m_scale;
 
-		m_Coords.insert(make_pair(make_pair(STEP_X*itEls->first.first+84-dx,STEP_Y*itEls->first.second+50+(itEls->first.first%2?42:0)+42-dy),itEls->first));
+		m_Coords.insert(make_pair(make_pair(STEP_X*itEls->first.first+84/STEP_CH_X-dx,STEP_Y*itEls->first.second+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)+42/STEP_CH_Y-dy),itEls->first));
 
 
 		if(itEls->second->m_iType==MODE_WATER)
@@ -568,27 +681,27 @@ void CeRepMapEditorView::RegenUpper(piiPair pp)
 			{
 				pBmp = it->second;
 
-				x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50-dx;
-				y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+				x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+				y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
-				x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50;
-				y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0);
+				x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2;
+				y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
 
 				if(x+STEP_X*2>0&&x-STEP_X*2<rt.right*pDoc->m_scale&&
 					y+STEP_Y*2>0&&y-STEP_Y*2<rt.bottom*pDoc->m_scale)
 				{
-					temp.DrawImage(*pBmp, x, y);
+					temp.DrawImage(*pBmp, x, y,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 				}
-				m_Temp->DrawImage(*pBmp, x1, y1);
+				m_Temp->DrawImage(*pBmp, x1, y1,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 			}
 		}
 
 
-		x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50-dx;
-		y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+		x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+		y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
-		x1 = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50;
-		y1 = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0);
+		x1 = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2;
+		y1 = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
 
 
 		if (pDoc->m_bShowNumbers)
@@ -622,11 +735,157 @@ void CeRepMapEditorView::RegenUpper(piiPair pp)
 			m_Temp->FillRectangle(&blbrush, bounds1);
 			m_Temp->DrawString(wss, -1, &font, bounds1, &format, &brush1);		
 		}
+		if (itEls->second->m_rgbColor!=RGB(255,255,255))
+		{
+			int iXs[6];
+			int iYs[6];
+			int iXs1[6];
+			int iYs1[6];
+
+			x = STEP_X*itEls->first.first+STEP_X/2-dx;
+			y = STEP_Y*itEls->first.second+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
+
+			x1 = STEP_X*itEls->first.first+STEP_X/2;
+			y1 = STEP_Y*itEls->first.second+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
+
+			iXs[0] = x + STEP_X * 0 / 4 + 2; iYs[0] = y + STEP_Y * 0 / 2 + 0;
+			iXs[1] = x + STEP_X * 5 / 8 + 8; iYs[1] = y + STEP_Y * 0 / 2 + 0;
+			iXs[2] = x + STEP_X * 4 / 4 + 2; iYs[2] = y + STEP_Y * 1 / 2;
+			iXs[3] = x + STEP_X * 5 / 8 + 8; iYs[3] = y + STEP_Y * 2 / 2;
+			iXs[4] = x + STEP_X * 0 / 4 + 2; iYs[4] = y + STEP_Y * 2 / 2;
+			iXs[5] = x - STEP_X * 1 / 4 - 12; iYs[5] = y + STEP_Y * 1 / 2; 
+
+			iXs1[0] = x1 + STEP_X * 0 / 4 + 2; iYs1[0] = y1 + STEP_Y * 0 / 2 + 0;
+			iXs1[1] = x1 + STEP_X * 5 / 8 + 8; iYs1[1] = y1 + STEP_Y * 0 / 2 + 0;
+			iXs1[2] = x1 + STEP_X * 4 / 4 + 2; iYs1[2] = y1 + STEP_Y * 1 / 2;
+			iXs1[3] = x1 + STEP_X * 5 / 8 + 8; iYs1[3] = y1 + STEP_Y * 2 / 2;
+			iXs1[4] = x1 + STEP_X * 0 / 4 + 2; iYs1[4] = y1 + STEP_Y * 2 / 2;
+			iXs1[5] = x1 - STEP_X * 1 / 4 - 12; iYs1[5] = y1 + STEP_Y * 1 / 2; 
+
+			PointF ppf[6];
+			PointF ppf1[6];
+
+			COLORREF rgb = itEls->second->m_rgbColor;
+			SolidBrush colorBrush(Color(30,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)));
+			Pen colorPen(Color(255,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)),7);
+
+			for (i=0;i<6;i++)
+			{
+				ppf[i].X = iXs[i];
+				ppf[i].Y = iYs[i];
+
+				ppf1[i].X = iXs1[i];
+				ppf1[i].Y = iYs1[i];
+			}
+
+ 			temp.DrawPolygon(&colorPen,ppf,6);
+ 			temp.FillPolygon(&colorBrush,ppf,6);
+
+			m_Temp->DrawPolygon(&colorPen,ppf1,6);
+			m_Temp->FillPolygon(&colorBrush,ppf1,6);
+		}
+
+		if (itEls->second->m_bHasUnit)
+		{
+			ifnend(it,pFrame->m_mibiUnits,itEls->second->m_pUnitItem->m_iType)
+			{
+				pBmp = it->second;
+				if (itEls->second->m_pUnitItem->m_bRotate)
+				{
+					pBmp->m_pBitmap->RotateFlip(RotateNoneFlipX);
+				}
+				
+				x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X*2/3-dx;
+				y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y+(itEls->first.first%2?STEP_Y/2:0)-dy;
+
+				x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X*2/3;
+				y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y+(itEls->first.first%2?STEP_Y/2:0);
+				x-=2;
+				x1-=2;
+				Gdiplus::RectF bufRt(x+20,y,STEP_X-40,STEP_X);
+				Gdiplus::RectF bufRt1(x1+20,y1,STEP_X-40,STEP_X);
+				Gdiplus::RectF bufRt0 = bufRt;
+				Gdiplus::RectF bufRt01 = bufRt1;
+
+				bufRt0.X-=5;
+				bufRt0.Y+=15;
+				bufRt0.Width+=10;
+				bufRt0.Height-=30;
+
+				bufRt01.X-=5;
+				bufRt01.Y+=15;
+				bufRt01.Width+=10;
+				bufRt01.Height-=30;
+
+				COLORREF rgb = itEls->second->m_pUnitItem->m_rgbColor;
+				SolidBrush colorBrush(Color(30,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)));
+				Pen colorPen(Color(255,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)),3);
+				GraphicsPath gp1, gp2;
+				Region oldReg;
+				Region bufReg;
+
+				WCHAR wsName[1024], wsCount[1024];
+				CString sName = itEls->second->m_pUnitItem->m_sName;
+				CString sCount;
+				sCount.Format("%d", itEls->second->m_pUnitItem->m_iCount);
+				mbstowcs(wsName,sName,sName.GetLength()+1);
+				mbstowcs(wsCount,sCount,sCount.GetLength()+1);
+				StringFormat format;
+				format.SetAlignment(StringAlignmentCenter);
+				format.SetLineAlignment(StringAlignmentCenter);
+				Gdiplus::Font font(L"Arial", 10, FontStyleBold);
+
+				SolidBrush fontBrush(Color(255, 255, 255, 255)); 
+
+				gp1.AddRectangle(bufRt0);
+				gp2.AddRectangle(bufRt01);
+
+				if(x+STEP_X*2>0&&x-STEP_X*2<rt.right*pDoc->m_scale&&
+					y+STEP_Y*2>0&&y-STEP_Y*2<rt.bottom*pDoc->m_scale)
+				{
+					temp.GetClip(&oldReg);
+					temp.GetClip(&bufReg);
+					bufReg.Intersect(&gp1);
+					temp.SetClip(&bufReg);
+					temp.FillEllipse(&colorBrush,bufRt);
+					temp.DrawEllipse(&colorPen,bufRt);
+					temp.SetClip(&oldReg);
+					RectF boundsName(x+20,y-15,STEP_X-40,30);
+					RectF boundsCount(x+20,y+STEP_Y*3/4-15,STEP_X-40,30);
+					DrawFillRoundRect(temp,colorPen,colorBrush,x+20,y-15,STEP_X-40,30,5);
+					temp.DrawString(wsName, -1, &font, boundsName, &format, &fontBrush);		
+					DrawFillRoundRect(temp,colorPen,colorBrush,x+20,y+STEP_Y*3/4-15,STEP_X-40,30,5);
+					temp.DrawString(wsCount, -1, &font, boundsCount, &format, &fontBrush);		
+					temp.DrawImage(*pBmp, x+5, y,pBmp->m_pBitmap->GetWidth(),pBmp->m_pBitmap->GetHeight());
+				}
+				m_Temp->GetClip(&oldReg);
+				m_Temp->GetClip(&bufReg);
+				bufReg.Intersect(&gp2);
+				m_Temp->SetClip(&bufReg);
+				m_Temp->FillEllipse(&colorBrush,bufRt1);
+				m_Temp->DrawEllipse(&colorPen,bufRt1);
+				m_Temp->SetClip(&oldReg);
+				RectF boundsName(x1+20,y1-15,STEP_X-40,30);
+				RectF boundsCount(x1+20,y1+STEP_Y*3/4-15,STEP_X-40,30);
+				DrawFillRoundRect(*m_Temp,colorPen,colorBrush,x1+20,y1-15,STEP_X-40,30,5);
+				m_Temp->DrawString(wsName, -1, &font, boundsName, &format, &fontBrush);		
+				DrawFillRoundRect(*m_Temp,colorPen,colorBrush,x1+20,y1+STEP_Y*3/4-15,STEP_X-40,30,5);
+				m_Temp->DrawString(wsCount, -1, &font, boundsCount, &format, &fontBrush);		
+				m_Temp->DrawImage(*pBmp, x1+5, y1,pBmp->m_pBitmap->GetWidth(),pBmp->m_pBitmap->GetHeight());
+				if (itEls->second->m_pUnitItem->m_bRotate)
+				{
+					pBmp->m_pBitmap->RotateFlip(RotateNoneFlipX);
+				}
+
+			}
+		}
+
 	}
-	
+
 	graphics.DrawImage(&backBuffer, 0, 0, 0, 0, 
 		rt.right, rt.bottom, UnitPixel);
 }
+
 
 BOOL CeRepMapEditorView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
@@ -663,8 +922,8 @@ void CeRepMapEditorView::OnInitialUpdate()
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	sizeTotal.cx = STEP_X*pDoc->m_piiSize.first+100;
- 	sizeTotal.cy = STEP_Y*pDoc->m_piiSize.second+100;
+	sizeTotal.cx = STEP_X*pDoc->m_piiSize.first+100/STEP_CH_X;
+ 	sizeTotal.cy = STEP_Y*pDoc->m_piiSize.second+100/STEP_CH_Y;
 	sizeTotal.cx*=pDoc->m_scale;
 	sizeTotal.cy*=pDoc->m_scale;
  	SetScrollSizes(MM_TEXT, sizeTotal);
@@ -683,7 +942,7 @@ void CeRepMapEditorView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	CScrollView::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
-void CeRepMapEditorView::DrawElement(piiPair pp)
+void CeRepMapEditorView::DrawElement(piiPair pp, bool bDeleteUnit /*= false*/)
 {
 	mpiimiMapIt itEls;
 	mibiMapIt itEl;
@@ -702,7 +961,7 @@ void CeRepMapEditorView::DrawElement(piiPair pp)
 	ifend(itEls,pDoc->m_Elements,pp)
 		return;
 
-	
+
 	int dx, dy;
 	int x;
 	int y;
@@ -713,6 +972,71 @@ void CeRepMapEditorView::DrawElement(piiPair pp)
 	dx = GetScrollPos(SB_HORZ)/pDoc->m_scale;
 
 	CGdiPlusBitmapResource *pBmp = NULL;;
+	if (pDoc->m_iMode == MODE_CURSOR)
+	{
+		pFrame->m_wndProperties.SetUnitItem(itEls->second->m_pUnitItem,this);
+		return;
+	}
+	else
+		pFrame->m_wndProperties.SetUnitItem(NULL,NULL);
+
+	if (pDoc->m_iMode == MODE_AREAS)
+	{
+		itEls->second->m_rgbColor = RGB(255,255,255);
+		if (!bDeleteUnit)
+		{
+			itEls->second->m_rgbColor = pFrame->m_wndProperties.GetColor();
+		}
+	}
+
+	if (pDoc->m_iMode==MODE_RECRUIT	||
+		pDoc->m_iMode==MODE_MUSQUETIER	||
+		pDoc->m_iMode==MODE_HUSSAR		||
+		pDoc->m_iMode==MODE_GRENADIER	||
+		pDoc->m_iMode==MODE_GAUBICA	||
+		pDoc->m_iMode==MODE_EGER		||
+		pDoc->m_iMode==MODE_DRAGOON	||
+		pDoc->m_iMode==MODE_CUIRASSIER	||
+		pDoc->m_iMode==MODE_CANNON		)
+	{
+		ifend(itEl,pFrame->m_mibiUnits,pDoc->m_iMode)
+			return;
+
+		pBmp = itEl->second;
+
+		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X*2/3-dx;
+		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y+(itEls->first.first%2?STEP_Y/2:0)-dy;
+
+		x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X*2/3;
+		y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y+(itEls->first.first%2?STEP_Y/2:0);
+
+		if(itEls->second->m_bHasUnit)
+		{
+			itEls->second->m_bHasUnit = false;
+			delete itEls->second->m_pUnitItem;
+		}
+		if (!bDeleteUnit)
+		{
+			CString sName = pFrame->m_wndProperties.GetName();
+			int iCount = pFrame->m_wndProperties.GetCount();
+			bool bRotate = pFrame->m_wndProperties.GetRotate();
+			COLORREF rgbColor = pFrame->m_wndProperties.GetColor();
+
+			itEls->second->m_bHasUnit = true;
+			itEls->second->m_pUnitItem = new CUnitItem(sName,iCount,pDoc->m_iMode,bRotate,rgbColor,itEls->second);
+			if (itEls->second->m_pUnitItem->m_bRotate)
+			{
+				pBmp->m_pBitmap->RotateFlip(RotateNoneFlipX);
+			}
+			graphics.DrawImage(*pBmp, x+5-2, y,pBmp->m_pBitmap->GetWidth(),pBmp->m_pBitmap->GetHeight());
+			m_Temp->DrawImage(*pBmp, x1+5-2, y1,pBmp->m_pBitmap->GetWidth(),pBmp->m_pBitmap->GetHeight());
+			if (itEls->second->m_pUnitItem->m_bRotate)
+			{
+				pBmp->m_pBitmap->RotateFlip(RotateNoneFlipX);
+			}
+		}
+	}
+
 	if( pDoc->m_iMode!=MODE_BRIDGE001001&&
 		pDoc->m_iMode!=MODE_BRIDGE001010&&
 		pDoc->m_iMode!=MODE_BRIDGE010001&&
@@ -727,7 +1051,19 @@ void CeRepMapEditorView::DrawElement(piiPair pp)
 		pDoc->m_iMode!=MODE_BRIDGE100100&&
 		pDoc->m_iMode!=MODE_BRIDGE101000&&
 		pDoc->m_iMode!=MODE_BRIDGE101010&&
-		pDoc->m_iMode!=MODE_BRIDGE111111)
+		pDoc->m_iMode!=MODE_BRIDGE111111&&
+		pDoc->m_iMode!=MODE_RECRUIT		&&
+		pDoc->m_iMode!=MODE_MUSQUETIER	&&
+		pDoc->m_iMode!=MODE_HUSSAR		&&
+		pDoc->m_iMode!=MODE_GRENADIER	&&
+		pDoc->m_iMode!=MODE_GAUBICA		&&
+		pDoc->m_iMode!=MODE_EGER		&&
+		pDoc->m_iMode!=MODE_DRAGOON		&&
+		pDoc->m_iMode!=MODE_CUIRASSIER	&&
+		pDoc->m_iMode!=MODE_CANNON		&&
+		pDoc->m_iMode!=MODE_AREAS
+
+		)
 	{
 		ifend(itEl,pFrame->m_mibiElBtimaps,pDoc->m_iMode)
 			return;
@@ -746,6 +1082,7 @@ void CeRepMapEditorView::DrawElement(piiPair pp)
 			for (k=0;k<pItem->m_vmiNeibs.size();k++)
 			{
 				iMask<<=1;
+	
 				iMask+=(!pItem->m_vmiNeibs[k]||pItem->m_vmiNeibs[k]->m_iType==MODE_WATER)?1:0;
 			}
 			ifnend(it,pFrame->m_mibiWaterBtimaps,iMask)
@@ -759,32 +1096,33 @@ void CeRepMapEditorView::DrawElement(piiPair pp)
 			itEls->second->m_iBuilding = NULL;
 		}
 
-		x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()+50-dx;
-		y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+		x = STEP_X*(itEls->first.first+1)-pFrame->m_pEmpty->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+		y = STEP_Y*(itEls->first.second+1)-pFrame->m_pEmpty->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
 
-//		graphics.DrawImage(*pFrame->m_pEmpty,x,y-1);
+		//		graphics.DrawImage(*pFrame->m_pEmpty,x,y-1);
 
-		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50-dx;
-		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
-		x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50;
-		y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0);
+		x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2;
+		y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
 
 
-		graphics.DrawImage(*pBmp, x, y);
-		m_Temp->DrawImage(*pBmp, x1, y1);
+		graphics.DrawImage(*pBmp, x, y,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
+		m_Temp->DrawImage(*pBmp, x1, y1,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 
 		itEls->second->m_iType = pDoc->m_iMode;
 
 		x*=pDoc->m_scale;
 		y*=pDoc->m_scale;
 
-		m_Coords.insert(make_pair(make_pair(STEP_X*itEls->first.first+84-dx,STEP_Y*itEls->first.second+50+(itEls->first.first%2?42:0)+42-dy),itEls->first));
+
+		m_Coords.insert(make_pair(make_pair(STEP_X*itEls->first.first+84/STEP_CH_X-dx,STEP_Y*itEls->first.second+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)+42/STEP_CH_Y-dy),itEls->first));
 	}
 
 	if((itEls->second->m_iType==MODE_WATER)&&
-	  ( pDoc->m_iMode==MODE_BRIDGE001001||
+		( pDoc->m_iMode==MODE_BRIDGE001001||
 		pDoc->m_iMode==MODE_BRIDGE001010||
 		pDoc->m_iMode==MODE_BRIDGE010001||
 		pDoc->m_iMode==MODE_BRIDGE010010||
@@ -803,14 +1141,14 @@ void CeRepMapEditorView::DrawElement(piiPair pp)
 		ifnend(it,pFrame->m_mibiBridgeBitmaps,pDoc->m_iMode)
 		{
 			pBmp = it->second;
-			x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50-dx;
-			y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0)-dy;
+			x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2-dx;
+			y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0)-dy;
 
-			x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50;
-			y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0);
+			x1 = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2;
+			y1 = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
 
-			graphics.DrawImage(*pBmp, x, y);
-			m_Temp->DrawImage(*pBmp, x1, y1);
+			graphics.DrawImage(*pBmp, x, y,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
+			m_Temp->DrawImage(*pBmp, x1, y1,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 			itEls->second->m_iBuilding = pDoc->m_iMode;
 		}
 	}
@@ -819,6 +1157,7 @@ void CeRepMapEditorView::DrawElement(piiPair pp)
 
 
 }
+
 void CeRepMapEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
@@ -853,8 +1192,8 @@ void CeRepMapEditorView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject*
 	if (!pDoc)
 		return;
 	CSize sizeTotal;
-	sizeTotal.cx = STEP_X*pDoc->m_piiSize.first+100;
-	sizeTotal.cy = STEP_Y*pDoc->m_piiSize.second+100;
+	sizeTotal.cx = STEP_X*pDoc->m_piiSize.first+100/STEP_CH_X;
+	sizeTotal.cy = STEP_Y*pDoc->m_piiSize.second+100/STEP_CH_Y;
 	sizeTotal.cx*=pDoc->m_scale;
 	sizeTotal.cy*=pDoc->m_scale;
 	SetScrollSizes(MM_TEXT, sizeTotal);
@@ -901,6 +1240,16 @@ void CeRepMapEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	if(pDoc->m_iMode==MODE_D4) {pDoc->m_iMode = MODE_D5; pFrame->m_Defences->Redraw();return;}
 	if(pDoc->m_iMode==MODE_D5) {pDoc->m_iMode = MODE_D1; pFrame->m_Defences->Redraw();return;}
 
+	if(pDoc->m_iMode==MODE_RECRUIT		) {pDoc->m_iMode = MODE_MUSQUETIER	; pFrame->m_Units->Redraw();return;}
+	if(pDoc->m_iMode==MODE_MUSQUETIER	) {pDoc->m_iMode = MODE_HUSSAR		; pFrame->m_Units->Redraw();return;}
+	if(pDoc->m_iMode==MODE_HUSSAR		) {pDoc->m_iMode = MODE_GRENADIER	; pFrame->m_Units->Redraw();return;}
+	if(pDoc->m_iMode==MODE_GRENADIER	) {pDoc->m_iMode = MODE_GAUBICA		; pFrame->m_Units->Redraw();return;}
+	if(pDoc->m_iMode==MODE_GAUBICA		) {pDoc->m_iMode = MODE_EGER		; pFrame->m_Units->Redraw();return;}
+	if(pDoc->m_iMode==MODE_EGER			) {pDoc->m_iMode = MODE_DRAGOON		; pFrame->m_Units->Redraw();return;}
+	if(pDoc->m_iMode==MODE_DRAGOON		) {pDoc->m_iMode = MODE_CUIRASSIER	; pFrame->m_Units->Redraw();return;}
+	if(pDoc->m_iMode==MODE_CUIRASSIER	) {pDoc->m_iMode = MODE_CANNON		; pFrame->m_Units->Redraw();return;}
+	if(pDoc->m_iMode==MODE_CANNON		) {pDoc->m_iMode = MODE_RECRUIT		; pFrame->m_Units->Redraw();return;}
+
 	CScrollView::OnLButtonDblClk(nFlags, point);
 }
 
@@ -929,6 +1278,8 @@ void CeRepMapEditorView::HitDraw(UINT nFlags, CPoint point)
 	CMFCRibbonStatusBarPane* pBase = dynamic_cast<CMFCRibbonStatusBarPane*>(pFrame->m_wndStatusBar.GetExElement(0));
 
 	double dMin;
+	if (!m_Coords.size())
+		return;
 	piiPair pp = m_Coords.begin()->second;
 	int dx, dy;
 	dy = GetScrollPos(SB_VERT)/pDoc->m_scale;
@@ -965,7 +1316,15 @@ void CeRepMapEditorView::HitDraw(UINT nFlags, CPoint point)
 		mpiimiMapIt itEls;
 		ifend(itEls,pDoc->m_Elements,pp)
 			return;
-
+		if (pDoc->m_iMode == MODE_AREAS)
+		{
+			DrawElement(pp,true);
+		}
+		if (pDoc->m_iMode >= MODE_RECRUIT&& pDoc->m_iMode<=MODE_CANNON)
+		{
+			DrawElement(pp,true);
+		}
+		else
 		if( itEls->second->m_iBuilding<MODE_BRIDGE001001||
 			itEls->second->m_iBuilding>MODE_BRIDGE111111)
 		{
@@ -1049,8 +1408,8 @@ void CeRepMapEditorView::OnFileSaveAsPicture()
 	CRect rt;
 	rt.top = 0;
 	rt.left = 0;
-	rt.right = pDoc->m_piiSize.first*STEP_X+100;
-	rt.bottom = pDoc->m_piiSize.second*STEP_Y+100;
+	rt.right = pDoc->m_piiSize.first*STEP_X+100/STEP_CH_X;
+	rt.bottom = pDoc->m_piiSize.second*STEP_Y+100/STEP_CH_Y;
 
 	Bitmap backBuffer(rt.right, rt.bottom, &graphics);
 	Graphics temp(&backBuffer);
@@ -1081,10 +1440,10 @@ void CeRepMapEditorView::OnFileSaveAsPicture()
 			}
 		}
 
-		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50;
-		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0);
+		x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2;
+		y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
 
-		temp.DrawImage(*pBmp, x, y);
+		temp.DrawImage(*pBmp, x, y,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 
 
 		if(itEls->second->m_iType==MODE_WATER)
@@ -1093,9 +1452,9 @@ void CeRepMapEditorView::OnFileSaveAsPicture()
 			{
 				pBmp = it->second;
 
-				x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()+50;
-				y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()+50+(itEls->first.first%2?42:0);
-				temp.DrawImage(*pBmp, x, y);
+				x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X/2;
+				y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
+				temp.DrawImage(*pBmp, x, y,pBmp->m_pBitmap->GetWidth()/STEP_CH_X,pBmp->m_pBitmap->GetHeight()/STEP_CH_Y);
 			}
 		}
 		if (pDoc->m_bShowNumbers)
@@ -1125,6 +1484,105 @@ void CeRepMapEditorView::OnFileSaveAsPicture()
 
 			temp.DrawString(wss, -1, &font, bounds, &format, &brush);		
 		}
+
+		if (itEls->second->m_rgbColor!=RGB(255,255,255))
+		{
+			int iXs[6];
+			int iYs[6];
+
+			x = STEP_X*itEls->first.first+STEP_X/2;
+			y = STEP_Y*itEls->first.second+STEP_X/2+(itEls->first.first%2?STEP_Y/2:0);
+
+
+			iXs[0] = x + STEP_X * 0 / 4 + 2; iYs[0] = y + STEP_Y * 0 / 2 + 0;
+			iXs[1] = x + STEP_X * 5 / 8 + 8; iYs[1] = y + STEP_Y * 0 / 2 + 0;
+			iXs[2] = x + STEP_X * 4 / 4 + 2; iYs[2] = y + STEP_Y * 1 / 2;
+			iXs[3] = x + STEP_X * 5 / 8 + 8; iYs[3] = y + STEP_Y * 2 / 2;
+			iXs[4] = x + STEP_X * 0 / 4 + 2; iYs[4] = y + STEP_Y * 2 / 2;
+			iXs[5] = x - STEP_X * 1 / 4 - 12; iYs[5] = y + STEP_Y * 1 / 2; 
+
+			PointF ppf[6];
+
+			COLORREF rgb = itEls->second->m_rgbColor;
+			SolidBrush colorBrush(Color(30,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)));
+			Pen colorPen(Color(255,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)),7);
+			int i;
+			for (i=0;i<6;i++)
+			{
+				ppf[i].X = iXs[i];
+				ppf[i].Y = iYs[i];
+			}
+
+			temp.DrawPolygon(&colorPen,ppf,6);
+			temp.FillPolygon(&colorBrush,ppf,6);
+
+		}
+
+		if (itEls->second->m_bHasUnit)
+		{
+			ifnend(it,pFrame->m_mibiUnits,itEls->second->m_pUnitItem->m_iType)
+			{
+				pBmp = it->second;
+				if (itEls->second->m_pUnitItem->m_bRotate)
+				{
+					pBmp->m_pBitmap->RotateFlip(RotateNoneFlipX);
+				}
+
+				x = STEP_X*(itEls->first.first+1)-pBmp->m_pBitmap->GetWidth()/STEP_CH_X+STEP_X*2/3;
+				y = STEP_Y*(itEls->first.second+1)-pBmp->m_pBitmap->GetHeight()/STEP_CH_Y+STEP_Y+(itEls->first.first%2?STEP_Y/2:0);
+
+				x-=2;
+				Gdiplus::RectF bufRt(x+20,y,STEP_X-40,STEP_X);
+				Gdiplus::RectF bufRt0 = bufRt;
+
+				bufRt0.X-=5;
+				bufRt0.Y+=15;
+				bufRt0.Width+=10;
+				bufRt0.Height-=30;
+
+				COLORREF rgb = itEls->second->m_pUnitItem->m_rgbColor;
+				SolidBrush colorBrush(Color(30,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)));
+				Pen colorPen(Color(255,GetRValue(rgb), GetGValue(rgb), GetBValue(rgb)),3);
+				GraphicsPath gp1;
+				Region oldReg;
+				Region bufReg;
+
+				WCHAR wsName[1024], wsCount[1024];
+				CString sName = itEls->second->m_pUnitItem->m_sName;
+				CString sCount;
+				sCount.Format("%d", itEls->second->m_pUnitItem->m_iCount);
+				mbstowcs(wsName,sName,sName.GetLength()+1);
+				mbstowcs(wsCount,sCount,sCount.GetLength()+1);
+				StringFormat format;
+				format.SetAlignment(StringAlignmentCenter);
+				format.SetLineAlignment(StringAlignmentCenter);
+				Gdiplus::Font font(L"Arial", 10, FontStyleBold);
+
+				SolidBrush fontBrush(Color(255, 255, 255, 255)); 
+
+				gp1.AddRectangle(bufRt0);
+
+				temp.GetClip(&oldReg);
+				temp.GetClip(&bufReg);
+				bufReg.Intersect(&gp1);
+				temp.SetClip(&bufReg);
+				temp.FillEllipse(&colorBrush,bufRt);
+				temp.DrawEllipse(&colorPen,bufRt);
+				temp.SetClip(&oldReg);
+				RectF boundsName(x+20,y-15,STEP_X-40,30);
+				RectF boundsCount(x+20,y+STEP_Y*3/4-15,STEP_X-40,30);
+				DrawFillRoundRect(temp,colorPen,colorBrush,x+20,y-15,STEP_X-40,30,5);
+				temp.DrawString(wsName, -1, &font, boundsName, &format, &fontBrush);		
+				DrawFillRoundRect(temp,colorPen,colorBrush,x+20,y+STEP_Y*3/4-15,STEP_X-40,30,5);
+				temp.DrawString(wsCount, -1, &font, boundsCount, &format, &fontBrush);		
+				temp.DrawImage(*pBmp, x+5, y,pBmp->m_pBitmap->GetWidth(),pBmp->m_pBitmap->GetHeight());
+				if (itEls->second->m_pUnitItem->m_bRotate)
+				{
+					pBmp->m_pBitmap->RotateFlip(RotateNoneFlipX);
+				}
+
+			}
+		}
 	}
 	WCHAR ss[1024];
 	mbstowcs(ss,sPath,sPath.GetLength()+1);
@@ -1138,4 +1596,30 @@ void CeRepMapEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 	HitDraw(MK_RBUTTON, point);	
 
 	CScrollView::OnRButtonDown(nFlags, point);
+}
+
+void CeRepMapEditorView::DrawFillRoundRect(Graphics &g, Pen &p, SolidBrush& b, float X, float Y, float width, float height, float radius)
+{
+	GraphicsPath gp;
+	gp.AddLine(X + radius, Y, X + width - (radius*2), Y);
+	gp.AddArc(X + width - (radius*2), Y, radius*2, radius*2, 270, 90);
+	gp.AddLine(X + width, Y + radius, X + width, Y + height - (radius*2));
+	gp.AddArc(X + width - (radius*2), Y + height - (radius*2), radius*2, radius*2,0,90);
+	gp.AddLine(X + width - (radius*2), Y + height, X + radius, Y + height);
+	gp.AddArc(X, Y + height - (radius*2), radius*2, radius*2, 90, 90);
+	gp.AddLine(X, Y + height - (radius*2), X, Y + radius);
+	gp.AddArc(X, Y, radius*2, radius*2, 180, 90);
+	gp.CloseFigure();
+	g.FillPath(&b, &gp);
+	g.DrawPath(&p, &gp);
+	gp.Reset();
+}
+
+void CeRepMapEditorView::FilterByColorAndForest(bool bFilterOn, COLORREF rgb)
+{
+	m_bFilterOn = bFilterOn;
+	m_rgbFilter = rgb;
+
+	ClearDraw();
+	GetDocument()->UpdateAllViews(NULL);
 }

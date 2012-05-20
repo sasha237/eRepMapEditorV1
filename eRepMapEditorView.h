@@ -16,6 +16,7 @@
 #pragma once
 
 #include "GdiPlusBitmap.h"
+class CeRepMapEditorDoc;
 class CeRepMapEditorView : public CScrollView
 {
 protected: // create from serialization only
@@ -63,7 +64,7 @@ public:
 	mpiipiiMap m_Coords;
 	
 	void HitDraw(UINT nFlags, CPoint point);
-	void DrawElement(piiPair pp);
+	void DrawElement(piiPair pp, bool bDeleteUnit = false);
 	void RegenUpper(piiPair pp);
 	void RegenWater(piiPair pp);
 	virtual void OnInitialUpdate();
@@ -83,6 +84,11 @@ public:
 	Graphics* m_Temp;
 	void DrawAll();
 	void ClearDraw();
+	void DrawFillRoundRect(Graphics &g, Pen &p, SolidBrush& b, float X, float Y, float width, float height, float radius);
+
+	void FilterByColorAndForest(bool bFilterOn, COLORREF rgb);
+	bool m_bFilterOn;
+	COLORREF m_rgbFilter;
 };
 
 #ifndef _DEBUG  // debug version in eRepMapEditorView.cpp

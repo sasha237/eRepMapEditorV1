@@ -42,7 +42,6 @@
 #define IDS_STATUS_PANE1                122
 #define IDS_STATUS_PANE2                123
 #define IDS_STRING124                   124
-#define IDS_USERS_VIEW                  124
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
 #define IDR_eRepMapEditorTYPE           130
@@ -134,6 +133,36 @@
 #define IDS_RIBBON_H4                   325
 #define IDS_RIBBON_H5                   326
 #define IDS_RIBBON_SMALL_CITY           327
+
+#define IDS_RIBBON_RECRUIT               328
+#define IDS_RIBBON_MUSQUETIER            329
+#define IDS_RIBBON_HUSSAR                330
+#define IDS_RIBBON_GRENADIER             331
+#define IDS_RIBBON_GAUBICA               332
+#define IDS_RIBBON_EGER                  333
+#define IDS_RIBBON_DRAGOON               334
+#define IDS_RIBBON_CUIRASSIER            335
+#define IDS_RIBBON_CANNON                336
+#define IDS_RIBBON_UNITS	             337
+
+#define ID_PROPERTIES					 338
+#define ID_CLASS_PROPERTIES				 339
+#define ID_VIEW_PROPERTIESWND			 340
+#define ID_SORTPROPERTIES				 341
+#define ID_PROPERTIES1					 342
+#define ID_PROPERTIES2					 343
+#define IDI_PROPERTIES_WND				 344
+#define IDI_PROPERTIES_WND_HC			 345
+#define IDS_PROPERTIES_WND				 346
+#define IDR_PROPERTIES					 347
+#define IDB_PROPERTIES_HC				 348
+#define ID_EXPAND_ALL					 349
+
+#define IDS_RIBBON_AREAS	             350
+#define IDS_RIBBON_FILTER	             351
+#define IDS_FILTER_BY_FOREST             352
+#define IDS_ALL_FILTERS		             353
+
 #define IDC_ALL_MESSAGES_EDIT           1000
 #define IDC_WRITE_MESSAGE_EDIT          1001
 #define IDC_USERS_LIST                  1003
@@ -195,6 +224,22 @@
 #define ID_INTERCHANGEBRIDGES           32822
 #define ID_VIEW_USERS                   32823
 #define ID_CHAT_USERS                   32824
+
+#define ID_RECRUIT                      32829
+#define ID_MUSQUETIER                   32830
+#define ID_HUSSAR                       32831
+#define ID_GRENADIER                    32832
+#define ID_GAUBICA                      32833
+#define ID_EGER                         32834
+#define ID_DRAGOON                      32835
+#define ID_CUIRASSIER                   32836
+#define ID_CANNON                       32837
+#define ID_UNITS	                    32838
+#define ID_AREAS	                    32839
+#define ID_FILTER_COLOR					32840
+#define ID_FILTER_BY_FOREST				32841
+#define ID_ALL_FILTERS					32842
+
 #define IDS_RIBBON_PAINT                61447
 
 // Next default values for new objects
@@ -202,8 +247,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        418
-#define _APS_NEXT_COMMAND_VALUE         32825
-#define _APS_NEXT_CONTROL_VALUE         1007
-#define _APS_NEXT_SYMED_VALUE           328
+#define _APS_NEXT_COMMAND_VALUE         32843
+#define _APS_NEXT_CONTROL_VALUE         1008
+#define _APS_NEXT_SYMED_VALUE           354
 #endif
 #endif
