@@ -1,0 +1,890 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\eRepMapEditor.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#if !defined(_AFXDLL)\r\n"
+    "#include ""afxribbon.rc""              // MFC ribbon and control bar resources\r\n"
+    "#endif\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_MAINTOOLBAR         BITMAP                  "res\\maintoolbarmini.bmp"
+IDB_MAINTOOLBAR_SMALL   BITMAP                  "res\\maintoolbarsmall.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_BRIDGE              PNG                     "res\\bridge.png"
+IDB_FOREST              PNG                     "res\\forest.png"
+IDB_HILL                PNG                     "res\\hill.png"
+IDB_MOUNTAIN            PNG                     "res\\mountain.png"
+IDB_PLAIN               PNG                     "res\\plain.png"
+IDB_WATER               PNG                     "res\\water.png"
+IDB_PNG000000           PNG                     "res\\000000.png"
+IDB_PNG000001           PNG                     "res\\000001.png"
+IDB_PNG000010           PNG                     "res\\000010.png"
+IDB_PNG000011           PNG                     "res\\000011.png"
+IDB_PNG000100           PNG                     "res\\000100.png"
+IDB_PNG000101           PNG                     "res\\000101.png"
+IDB_PNG000110           PNG                     "res\\000110.png"
+IDB_PNG000111           PNG                     "res\\000111.png"
+IDB_PNG001000           PNG                     "res\\001000.png"
+IDB_PNG001001           PNG                     "res\\001001.png"
+IDB_PNG001010           PNG                     "res\\001010.png"
+IDB_PNG001011           PNG                     "res\\001011.png"
+IDB_PNG001100           PNG                     "res\\001100.png"
+IDB_PNG001101           PNG                     "res\\001101.png"
+IDB_PNG001110           PNG                     "res\\001110.png"
+IDB_PNG001111           PNG                     "res\\001111.png"
+IDB_PNG010000           PNG                     "res\\010000.png"
+IDB_PNG010001           PNG                     "res\\010001.png"
+IDB_PNG010010           PNG                     "res\\010010.png"
+IDB_PNG010011           PNG                     "res\\010011.png"
+IDB_PNG010100           PNG                     "res\\010100.png"
+IDB_PNG010101           PNG                     "res\\010101.png"
+IDB_PNG010110           PNG                     "res\\010110.png"
+IDB_PNG010111           PNG                     "res\\010111.png"
+IDB_PNG011000           PNG                     "res\\011000.png"
+IDB_PNG011001           PNG                     "res\\011001.png"
+IDB_PNG011010           PNG                     "res\\011010.png"
+IDB_PNG011011           PNG                     "res\\011011.png"
+IDB_PNG011100           PNG                     "res\\011100.png"
+IDB_PNG011101           PNG                     "res\\011101.png"
+IDB_PNG011110           PNG                     "res\\011110.png"
+IDB_PNG011111           PNG                     "res\\011111.png"
+IDB_PNG100000           PNG                     "res\\100000.png"
+IDB_PNG100001           PNG                     "res\\100001.png"
+IDB_PNG100010           PNG                     "res\\100010.png"
+IDB_PNG100011           PNG                     "res\\100011.png"
+IDB_PNG100100           PNG                     "res\\100100.png"
+IDB_PNG100101           PNG                     "res\\100101.png"
+IDB_PNG100110           PNG                     "res\\100110.png"
+IDB_PNG100111           PNG                     "res\\100111.png"
+IDB_PNG101000           PNG                     "res\\101000.png"
+IDB_PNG101001           PNG                     "res\\101001.png"
+IDB_PNG101010           PNG                     "res\\101010.png"
+IDB_PNG101011           PNG                     "res\\101011.png"
+IDB_PNG101100           PNG                     "res\\101100.png"
+IDB_PNG101101           PNG                     "res\\101101.png"
+IDB_PNG101110           PNG                     "res\\101110.png"
+IDB_PNG101111           PNG                     "res\\101111.png"
+IDB_PNG110000           PNG                     "res\\110000.png"
+IDB_PNG110001           PNG                     "res\\110001.png"
+IDB_PNG110010           PNG                     "res\\110010.png"
+IDB_PNG110011           PNG                     "res\\110011.png"
+IDB_PNG110100           PNG                     "res\\110100.png"
+IDB_PNG110101           PNG                     "res\\110101.png"
+IDB_PNG110110           PNG                     "res\\110110.png"
+IDB_PNG110111           PNG                     "res\\110111.png"
+IDB_PNG111000           PNG                     "res\\111000.png"
+IDB_PNG111001           PNG                     "res\\111001.png"
+IDB_PNG111010           PNG                     "res\\111010.png"
+IDB_PNG111011           PNG                     "res\\111011.png"
+IDB_PNG111100           PNG                     "res\\111100.png"
+IDB_PNG111101           PNG                     "res\\111101.png"
+IDB_PNG111110           PNG                     "res\\111110.png"
+IDB_PNG111111           PNG                     "res\\111111.png"
+IDB_PNGB000011          PNG                     "res\\b000011.png"
+IDB_PNGB001001          PNG                     "res\\b001001.png"
+IDB_PNGB001010          PNG                     "res\\b001010.png"
+IDB_PNGB010001          PNG                     "res\\b010001.png"
+IDB_PNGB010010          PNG                     "res\\b010010.png"
+IDB_PNGB011000          PNG                     "res\\b011000.png"
+IDB_PNGB011011          PNG                     "res\\b011011.png"
+IDB_PNGBIG_CITY         PNG                     "res\\bigcity.png"
+IDB_PNGD1               PNG                     "res\\d1.png"
+IDB_PNGD2               PNG                     "res\\d2.png"
+IDB_PNGD3               PNG                     "res\\d3.png"
+IDB_PNGD4               PNG                     "res\\d4.png"
+IDB_PNGD5               PNG                     "res\\d5.png"
+IDB_PNGH1               PNG                     "res\\h1.png"
+IDB_PNGH2               PNG                     "res\\h2.png"
+IDB_PNGH3               PNG                     "res\\h3.png"
+IDB_PNGH4               PNG                     "res\\h4.png"
+IDB_PNGH5               PNG                     "res\\h5.png"
+IDB_PNGSMALL_CITY       PNG                     "res\\smallcity.png"
+IDB_EMPTY               PNG                     "res\\empty.png"
+IDB_PNGB000101          PNG                     "res\\b000101.png"
+IDB_PNGB010100          PNG                     "res\\b010100.png"
+IDB_PNGB010101          PNG                     "res\\b010101.png"
+IDB_PNGB100010          PNG                     "res\\b100010.png"
+IDB_PNGB100100          PNG                     "res\\b100100.png"
+IDB_PNGB101000          PNG                     "res\\b101000.png"
+IDB_PNGB101010          PNG                     "res\\b101010.png"
+IDB_PNGB111111          PNG                     "res\\b111111.png"
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+IDB_MAIN                BITMAP                  "res\\main.bmp"
+IDB_FILELARGE           BITMAP                  "res\\filelarge.bmp"
+IDB_FILESMALL           BITMAP                  "res\\filesmall.bmp"
+IDB_WRITELARGE          BITMAP                  "res\\writelarge.bmp"
+IDB_WRITESMALL          BITMAP                  "res\\writesmall.bmp"
+IDB_BUTTONS             BITMAP                  "res\\buttons.bmp"
+IDB_NAVIGATION_LARGE    BITMAP                  "res\\nav_large.bmp"
+IDB_NAVIGATION_LARGE_HC BITMAP                  "res\\nav_large_hc.bmp"
+IDB_PAGES               BITMAP                  "res\\pages.bmp"
+IDB_PAGES_HC            BITMAP                  "res\\pages_hc.bmp"
+IDB_PAGES_SMALL         BITMAP                  "res\\pages_small.bmp"
+IDB_PAGES_SMALL_HC      BITMAP                  "res\\pages_small_hc.bmp"
+IDB_INFO                BITMAP                  "res\\info.bmp"
+IDB_MENU_IMAGES_24      BITMAP                  "res\\menuimages_hc.bmp"
+IDR_MENU_IMAGES         BITMAP                  "res\\menuimages.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\eRepMapEditor.ico"
+IDR_eRepMapEditorTYPE   ICON                    "res\\eRepMapEditorDoc.ico"
+IDI_CLASS_VIEW_HC       ICON                    "res\\class_view_hc.ico"
+IDI_CLASS_VIEW          ICON                    "res\\class_view.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_MAINFRAME_256 TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_MENU_IMAGES TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_WINDOW_MANAGER
+    SEPARATOR
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_TOOLS_MACRO
+    BUTTON      ID_SORTING_SORTALPHABETIC
+    BUTTON      ID_SORTING_SORTBYTYPE
+    BUTTON      ID_SORTING_SORTBYACCESS
+    BUTTON      ID_SORTING_GROUPBYTYPE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "&Caption Bar",                ID_VIEW_CAPTION_BAR
+        POPUP "&Application Look"
+        BEGIN
+            MENUITEM "Windows &2000",               ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office &XP",                  ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "&Windows XP",                 ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 200&3",                ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio.NET 200&5",     ID_VIEW_APPLOOK_VS_2005
+            POPUP "Office 200&7"
+            BEGIN
+                MENUITEM "&Blue Style",                 ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "B&lack Style",                ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "&Silver Style",               ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "&Aqua Style",                 ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About eRepMapEditor...",     ID_APP_ABOUT
+    END
+END
+
+IDR_eRepMapEditorTYPE MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Save as picture",             ID_FILE_SAVE_AS_PICTURE
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "&Caption Bar",                ID_VIEW_CAPTION_BAR
+        POPUP "&Application Look"
+        BEGIN
+            MENUITEM "Windows &2000",               ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office &XP",                  ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "&Windows XP",                 ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 200&3",                ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio.NET 200&5",     ID_VIEW_APPLOOK_VS_2005
+            POPUP "Office 200&7"
+            BEGIN
+                MENUITEM "&Blue Style",                 ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "B&lack Style",                ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "&Silver Style",               ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "&Aqua Style",                 ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New Window",                 ID_WINDOW_NEW
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About eRepMapEditor...",     ID_APP_ABOUT
+    END
+END
+
+IDR_POPUP_EDIT MENU 
+BEGIN
+    POPUP "Edit"
+    BEGIN
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+    END
+END
+
+IDR_WINDOWS_MENU MENU 
+BEGIN
+    MENUITEM "&New Window",                 ID_WINDOW_NEW
+END
+
+IDR_THEME_MENU MENU 
+BEGIN
+    MENUITEM "Office 2007 (&Blue Style)",   ID_VIEW_APPLOOK_OFF_2007_BLUE
+    MENUITEM "Office 2007 (B&lack Style)",  ID_VIEW_APPLOOK_OFF_2007_BLACK
+    MENUITEM "Office 2007 (&Silver Style)", ID_VIEW_APPLOOK_OFF_2007_SILVER
+    MENUITEM "Office 2007 (&Aqua Style)",   ID_VIEW_APPLOOK_OFF_2007_AQUA
+END
+
+IDR_ELEMENTS_MENU MENU 
+BEGIN
+    MENUITEM "Bridge",                      ID_BRIDGE
+    MENUITEM "Plain",                       ID_PLAIN
+    MENUITEM "Water",                       ID_WATER
+    MENUITEM "Hill",                        ID_HILL
+    MENUITEM "Mountain",                    ID_MOUNTAIN
+    MENUITEM "Forest",                      ID_FOREST
+    MENUITEM "Cursor",                      ID_CURSOR_ELEMENT
+    MENUITEM "Bridge",                      ID_BRIDGE001001
+    MENUITEM "Bridge",                      ID_BRIDGE001010
+    MENUITEM "Bridge",                      ID_BRIDGE010001
+    MENUITEM "Bridge",                      ID_BRIDGE010010
+    MENUITEM "Bridge",                      ID_BRIDGE011000
+    MENUITEM "Bridge",                      ID_BRIDGE011011
+    MENUITEM "Bridge",                      ID_BRIDGE000011
+    MENUITEM "Bridge",                      ID_BRIDGE000101
+    MENUITEM "Bridge",                      ID_BRIDGE010100
+    MENUITEM "Bridge",                      ID_BRIDGE010101
+    MENUITEM "Bridge",                      ID_BRIDGE100010
+    MENUITEM "Bridge",                      ID_BRIDGE100100
+    MENUITEM "Bridge",                      ID_BRIDGE101000
+    MENUITEM "Bridge",                      ID_BRIDGE101010
+    MENUITEM "Bridge",                      ID_BRIDGE111111
+    MENUITEM "Big city",                    ID_BIG_CITY
+    MENUITEM "Defence 1",                   ID_D1
+    MENUITEM "Defence 2",                   ID_D2
+    MENUITEM "Defence 3",                   ID_D3
+    MENUITEM "Defence 4",                   ID_D4
+    MENUITEM "Defence 5",                   ID_D5
+    MENUITEM "Hospital 1",                  ID_H1
+    MENUITEM "Hospital 2",                  ID_H2
+    MENUITEM "Hospital 3",                  ID_H3
+    MENUITEM "Hospital 4",                  ID_H4
+    MENUITEM "Hospital 5",                  ID_H5
+    MENUITEM "Small City",                  ID_SMALL_CITY
+    MENUITEM "Zoom in",                     ID_ZOOMIN_SCALE
+    MENUITEM "Zoom out",                    ID_ZOOMOUT_SCALE
+    MENUITEM "Show numbers",                ID_RIBBON_SHOW_NUMBERS
+    MENUITEM "Hospitals",                   ID_HOSPITALS
+    MENUITEM "Defences",                    ID_DEFENCES
+    MENUITEM "Simple Bridges",              ID_SIMPLEBRIDGES
+    MENUITEM "Turning Bridge",              ID_TURNINGBRIDGE
+    MENUITEM "Interchange Bridges",         ID_INTERCHANGEBRIDGES
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 171, 64
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About eRepMapEditor"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "eRepMapEditor, Version 1.0",IDC_STATIC,50,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2010",IDC_STATIC,50,26,114,8
+    DEFPUSHBUTTON   "OK",IDOK,114,43,50,14,WS_GROUP
+END
+
+IDD_FORMVIEW DIALOGEX 0, 0, 46, 48
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_ALL_MESSAGES_EDIT,4,12,17,14,ES_MULTILINE | WS_VSCROLL
+    LISTBOX         IDC_USERS_LIST,25,12,17,14,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_WRITE_MESSAGE_EDIT,4,30,17,14,ES_MULTILINE | WS_VSCROLL
+    DEFPUSHBUTTON   "Send",IDC_SEND_MESSAGE_BUTTON,25,30,17,14
+    CTEXT           "Status",IDC_STATUS_STATIC,4,3,17,8
+    CTEXT           "Chat members",IDC_MEMBERS_STATIC,25,3,17,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "sasha237"
+            VALUE "FileDescription", "erepublikmap"
+            VALUE "FileVersion", "0.0.0.1"
+            VALUE "InternalName", "eRepMapEditor.exe"
+            VALUE "LegalCopyright", "sasha237 Inc.  All rights reserved."
+            VALUE "OriginalFilename", "eRepMapEditor.exe"
+            VALUE "ProductName", "eRepMapEditor"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 164
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 57
+    END
+
+    IDD_FORMVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 42
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 44
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
+    IDS_RIBBON_BRIDGE       "Bridge"
+    IDS_RIBBON_PLAIN        "Plain"
+    IDS_RIBBON_WATER        "Water"
+    IDS_RIBBON_HILL         "Hill"
+    IDS_RIBBON_MOUNTAIN     "Mountain"
+    IDS_RIBBON_FOREST       "Forest"
+    IDS_RIBBON_ELEMENTS     "Elements"
+    IDS_RIBBON_CURSOR       "Cursor"
+    IDS_RIBBON_SIZE         "Size"
+    IDS_RIBBON_WIDTH        " Width: \t "
+    IDS_RIBBON_HEIGHT       "Height: \t "
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_EDIT_MENU           "Edit"
+    IDS_RIBBON_BIG_CITY     "Big city"
+    IDS_RIBBON_D1           "Defence 1"
+    IDS_RIBBON_D2           "Defence 2"
+    IDS_RIBBON_D3           "Defence 3"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RIBBON_D4           "Defence 4"
+    IDS_RIBBON_D5           "Defence 5"
+    IDS_RIBBON_H1           "Hospital 1"
+    IDS_RIBBON_H2           "Hospital 2"
+    IDS_RIBBON_H3           "Hospital 3"
+    IDS_RIBBON_H4           "Hospital 4"
+    IDS_RIBBON_H5           "Hospital 5"
+    IDS_RIBBON_SMALL_CITY   "SmallCity"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "eRepMapEditor"
+    IDR_eRepMapEditorTYPE   "\neRepMapEditor\neRepMapEditor\neRepMapEditor Files (*.emap)\n.emap\neRepMapEditor.Document\neRepMapEditor.Document"
+    IDS_WINDOWS_MANAGER     "&Windows..."
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "eRepMapEditor"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_DIRECT    "Print the active document using current options\nQuick Print"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_TILE_VERT     "Arrange windows as non-overlapping tiles\nTile Windows"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle Status Bar"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_CAPTION_BAR     "Show or hide the caption bar\nToggle Caption Bar"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+    IDS_RIBBON_PAINT        "Paint"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RIBBON_RESIZE       "Resize"
+    IDS_RIBBON_BUILDINGS    "Buildings"
+    IDS_RIBBON_SAVEAS_PICTURE "Save as picture"
+    IDS_RIBBON_SCALE        "Scale"
+    IDS_RIBBON_ZOOMIN       "Zoom in"
+    IDS_RIBBON_ZOOMOUT      "Zoom out"
+    IDS_RIBBON_SCALES       "Additional"
+    IDS_RIBBON_SHOW_NUMBERS "Show numbers"
+    IDS_RIBBON_DEFENCES     "Defence systems"
+    IDS_RIBBON_HOSPITALS    "Hospitals"
+    IDS_STATUS_PANE1        "Pane 1"
+    IDS_STATUS_PANE2        "Pane 2"
+    IDS_USERS_VIEW          "Users"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MYCALENDARS         "My Calendars"
+    IDS_CALENDAR            "Calendar"
+    IDS_SHORTCUTS           "Shortcuts"
+    IDS_FOLDERS             "Folders"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_OUTLOOKBAR          "Outlook Bar"
+    IDS_RIBBON_FILE         "File"
+    IDS_RIBBON_NEW          "&New"
+    IDS_RIBBON_OPEN         "&Open..."
+    IDS_RIBBON_SAVE         "&Save"
+    IDS_RIBBON_SAVEAS       "Save &As..."
+    IDS_RIBBON_PRINT        "Print"
+    IDS_RIBBON_PRINT_LABEL  "Preview and print the document"
+    IDS_RIBBON_PRINT_QUICK  "&Quick Print"
+    IDS_RIBBON_PRINT_PREVIEW "Print Pre&view"
+    IDS_RIBBON_PRINT_SETUP  "Print Set&up"
+    IDS_RIBBON_CLOSE        "&Close"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RIBBON_RECENT_DOCS  "Recent Documents"
+    IDS_RIBBON_EXIT         "E&xit"
+    IDS_RIBBON_HOME         "&Home"
+    IDS_RIBBON_CLIPBOARD    "Clipboard\nd"
+    IDS_RIBBON_PASTE        "Paste\nv"
+    IDS_RIBBON_CUT          "Cut\nx"
+    IDS_RIBBON_COPY         "Copy\nc"
+    IDS_RIBBON_SELECTALL    "Select All\na"
+    IDS_RIBBON_WINDOW       "Window\nw"
+    IDS_RIBBON_WINDOWS      "Windows\ni"
+    IDS_RIBBON_STYLE        "Style"
+    IDS_RIBBON_STYLE_TIP    "Modify Visual Style"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RIBBON_STYLE_DESC   "Choose one of the Office 2007 themes"
+    IDS_RIBBON_STATUSBAR    "Status Bar"
+    IDS_RIBBON_VIEW         "View"
+    IDS_RIBBON_CAPTIONBAR   "Caption Bar"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CAPTION_BUTTON      "Options..."
+    IDS_CAPTION_BUTTON_TIP  "Click here to see more options"
+    IDS_CAPTION_TEXT        "This is a caption bar where a message can be presented to the user."
+    IDS_CAPTION_IMAGE_TIP   "Important"
+    IDS_CAPTION_IMAGE_TEXT  "Here is an informational message for the user."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_PLAIN                "Add plain\nAdd plain"
+    ID_BRIDGE               "Add bridge\nAdd bridge"
+    ID_WATER                "Add water\nAdd water"
+    ID_HILL                 "Add hill\nAdd hill"
+    ID_ROCK                 "Add rock\nAdd rock"
+    ID_FOREST               "Add forest\n Add forest"
+    ID_MOUNTAIN             "Add mountain\nAdd mountain"
+    ID_CURSOR               "Select cursor\nSelect cursor"
+    ID_CURSOR_ELEMENT       "Select cursor\nSelect sursor"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_BRIDGE001001         "Add bridge\nAdd bridge"
+    ID_BRIDGE001010         "Add bridge\nAdd bridge"
+    ID_BRIDGE010001         "Add bridge\nAdd bridge"
+    ID_BRIDGE010010         "Add bridge\nAdd bridge"
+    ID_BRIDGE011000         "Add bridge\nAdd bridge"
+    ID_BRIDGE011011         "Add bridge\nAdd bridge"
+    ID_BRIDGE000011         "Add bridge\nAdd bridge"
+    ID_BRIDGE000101         "Add bridge\nAdd bridge"
+    ID_BRIDGE010100         "Add bridge\nAdd bridge"
+    ID_BRIDGE010101         "Add bridge\nAdd bridge"
+    ID_BRIDGE100010         "Add bridge\nAdd bridge"
+    ID_BRIDGE100100         "Add bridge\nAdd bridge"
+    ID_BRIDGE101000         "Add bridge\nAdd bridge"
+    ID_BRIDGE101010         "Add bridge\nAdd bridge"
+    ID_BRIDGE111111         "Add bridge\nAdd bridge"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_BIG_CITY             "Add big city\nAdd big city"
+    ID_D1                   "Add defence 1\nAdd defence 1"
+    ID_D2                   "Add defence 2\nAdd defence 2"
+    ID_D3                   "Add defence 3\nAdd defence 3"
+    ID_D4                   "Add defence 4\nAdd defence 4"
+    ID_D5                   "Add defence 5\nAdd defence 5"
+    ID_H1                   "Add hospital 1\nAdd hospital 1"
+    ID_H2                   "Add hospital 2\nAdd hospital 2"
+    ID_H3                   "Add hospital 3\nAdd hospital 3"
+    ID_H5                   "Add hospital 5\nAdd hospital 5"
+    ID_SMALL_CITY           "Add small city\nAdd small city"
+    ID_FILE_SAVE_AS_PICTURE "Save as jpg\nSave as jpg"
+    ID_ZOOMIN_SCALE         "Zoom in\nZoom in"
+    ID_ZOOMOUT_SCALE        "Zoom out\nZoom out"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_H4                   "Add hospital 4\nAdd hospital 4"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_RIBBON_SHOW_NUMBERS  "Show numbers\nShow numbers"
+    ID_HOSPITALS            "Hospitals\nHospitals"
+    ID_DEFENCES             "Defences\nDefences"
+    ID_SIMPLEBRIDGES        "Simple Bridges\nSimple Bridges"
+    ID_TURNINGBRIDGE        "Tirnuing Bridges\nTirnuing Bridges"
+    ID_INTERCHANGEBRIDGES   "Interchange Bridges\nInterchange Bridges"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\eRepMapEditor.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#if !defined(_AFXDLL)
+#include "afxribbon.rc"              // MFC ribbon and control bar resources
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
